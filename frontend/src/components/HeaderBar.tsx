@@ -1,4 +1,4 @@
-import { styled, alpha, useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,20 +9,6 @@ import { IconButton } from '@mui/material';
 import Person2Icon from '@mui/icons-material/Person2';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexShrink: 0,
-  borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
-  backdropFilter: 'blur(24px)',
-  border: '1px solid',
-  borderColor: alpha(theme.palette.secondary.dark, 0.4), // Use a brown for border
-  backgroundColor: alpha(theme.palette.background.default, 0.7), // Slightly more opaque soft grey
-  boxShadow: theme.shadows[3], // A bit more prominent shadow
-  padding: '8px 12px',
-}));
 
 export default function HeaderBar() {
   const theme = useTheme();
@@ -39,13 +25,29 @@ export default function HeaderBar() {
       }}
     >
       <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
+        <Toolbar
+          variant="dense"
+          disableGutters
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexShrink: 0,
+            borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
+            backdropFilter: 'blur(24px)',
+            border: '1px solid',
+            borderColor: alpha(theme.palette.secondary.dark, 0.4),
+            backgroundColor: alpha(theme.palette.background.default, 0.7),
+            boxShadow: theme.shadows[3],
+            padding: '8px 12px',
+          }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center', px: 0 }}>
             <Typography
               variant="logo"
               component="div"
               sx={{
-                background: `linear-gradient(45deg, ${theme.palette.secondary.main} 30%, ${theme.palette.secondary.dark} 90%)`, // Woody brown gradient
+                background: `#000000`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'inline-block',
@@ -100,7 +102,7 @@ export default function HeaderBar() {
               <ShoppingBagIcon />
             </IconButton>
           </Box>
-        </StyledToolbar>
+        </Toolbar>
       </Container>
     </AppBar>
   );

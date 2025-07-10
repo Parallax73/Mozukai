@@ -29,24 +29,24 @@ declare module '@mui/material/Typography' {
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4A5B4E', // Deep, natural green-brown for primary actions/text
-      light: '#6E7F71', // Lighter shade for subtle emphasis
-      dark: '#2F3C31',  // Darker shade for accents and hover
-      contrastText: '#F5F5F5', // Off-white for contrast
+      main: '#A78A7F',
+      light: '#D7C8B6',
+      dark: '#5C4B3D',
+      contrastText: '#F5F0E5',
     },
-    secondary: { // Used for a different accent or interaction color
-      main: '#967969', // A warm, natural brown
-      light: '#B2978A',
-      dark: '#6A4F41',
-      contrastText: '#F5F5F5',
+    secondary: {
+      main: '#C67B5A',
+      light: '#E3A98E',
+      dark: '#8A4B32',
+      contrastText: '#F5F0E5',
     },
     background: {
-      default: '#E0E0E0', // Soft, light grey background for the app
-      paper: '#FFFFFF',   // White for cards, etc.
+      default: '#F5F0E5',
+      paper: '#FFFFFF',
     },
     text: {
-      primary: '#2F3C31', // Dark brown for general text
-      secondary: '#6E7F71', // Muted green-brown for secondary text
+      primary: '#5C4B3D',
+      secondary: '#A78A7F',
     }
   },
   typography: {
@@ -61,27 +61,27 @@ const theme = createTheme({
       styleOverrides: {
         text: ({ theme }) => ({
           fontFamily: '"M PLUS 1", sans-serif',
-          color: theme.palette.primary.contrastText, // White text
+          color: theme.palette.text.primary,
           '&:hover': {
-            backgroundColor: theme.palette.primary.dark, // Darker green-brown on hover
+            backgroundColor: theme.palette.primary.light,
           },
         }),
         contained: ({ theme }) => ({
-          color: theme.palette.primary.contrastText, // White text
-          backgroundColor: theme.palette.secondary.main, // Warm brown for contained
+          color: theme.palette.primary.contrastText,
+          backgroundColor: theme.palette.secondary.main,
           '&:hover': {
-            backgroundColor: theme.palette.secondary.dark, // Darker brown on hover
+            backgroundColor: theme.palette.secondary.dark,
             boxShadow: 'none',
           },
         }),
       },
     },
-    MuiIconButton:{
-      styleOverrides:{
+    MuiIconButton: {
+      styleOverrides: {
         root: ({ theme }) => ({
-          color: theme.palette.primary.contrastText, // White icon
-          '&:hover':{
-             backgroundColor: theme.palette.primary.dark, // Darker green-brown on hover
+          color: theme.palette.text.primary,
+          '&:hover': {
+            backgroundColor: theme.palette.primary.light,
           }
         })
       }
