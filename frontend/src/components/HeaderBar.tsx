@@ -86,12 +86,6 @@ export default function HeaderBar() {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="text" size="small">
-              Sign in
-            </Button>
-            <Button color="primary" variant="contained" size="small">
-              Sign up
-            </Button>
             <IconButton color="primary" aria-label="profile">
               <Person2Icon />
             </IconButton>

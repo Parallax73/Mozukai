@@ -53,7 +53,7 @@ const theme = createTheme({
     fontFamily: '"DM Sans", sans-serif',
     logo: {
       fontSize: '2rem',
-      fontWeight: 700,
+      fontWeight: 700
     }
   },
   components: {
