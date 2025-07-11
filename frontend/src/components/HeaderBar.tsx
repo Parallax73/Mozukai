@@ -1,4 +1,5 @@
 import { alpha, useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -59,22 +60,22 @@ export default function HeaderBar() {
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
-            <Button variant="text" color="primary" size="small">
+            <Button  component={Link} to="/bonsai" variant="text" color="primary" size="small">
               Bonsai
             </Button>
-            <Button variant="text" color="primary" size="small">
+            <Button  component={Link} to="/ferramentas" variant="text" color="primary" size="small">
               Ferramentas
             </Button>
-            <Button variant="text" color="primary" size="small">
+            <Button component={Link} to="/insumos" variant="text" color="primary" size="small">
               Insumos
             </Button>
-            <Button variant="text" color="primary" size="small">
+            <Button component={Link} to="/acessorios" variant="text" color="primary" size="small">
               Acessórios
             </Button>
-            <Button variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
+            <Button component={Link} to="/vasos" variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
               Vasos
             </Button>
-            <Button variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
+            <Button component={Link} to="/blog" variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
               Blog
             </Button>
           </Box>

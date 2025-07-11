@@ -62,7 +62,7 @@ export default function HomePage() {
         <Button component={Link} to="/bonsai" variant="contained" endIcon={<ArrowOutwardIcon />}>
           Produtos
         </Button>
-        <Button variant="outlined">Saiba mais</Button>
+        <Button component={Link} to="/blog" variant="outlined">Saiba mais</Button>
       </Box>
 
       <Box
