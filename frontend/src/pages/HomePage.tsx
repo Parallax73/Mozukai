@@ -3,25 +3,25 @@ import RotatingText from '../components/RotatingText';
 import { LayoutGroup, motion } from 'framer-motion';
 
 export default function HomePage() {
-  const words = ["Natureza", "Arte", "Vida"];
+  const words = ["Natureza", "Arte", "Vida", "Mozukai"];
 
   return (
     <Box sx={{ 
       display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start', 
-        alignItems: 'center',
-        pt: '20vh'
+      flexDirection: 'column',
+      justifyContent: 'flex-start', 
+      alignItems: 'center',
+      pt: '15vh',
+      fontSize: '4rem'
     }}>
       <div className="rotating-text-demo">
         <LayoutGroup>
           <motion.p className="rotating-text-ptag" layout>
             <motion.span
-              className="pt-0.5 sm:pt-1 md:pt-2"
               layout
               transition={{ type: "spring", damping: 30, stiffness: 400 }}
             >
-              Bonsai é {" "}
+              Bonsai é
             </motion.span>
             <RotatingText
               texts={words}
@@ -34,7 +34,6 @@ export default function HomePage() {
               splitLevelClassName="rotating-text-split"
               transition={{ type: "spring", damping: 30, stiffness: 400 }}
               rotationInterval={3000}
-              
             />
           </motion.p>
         </LayoutGroup>
