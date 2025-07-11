@@ -1,15 +1,16 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import RotatingText from '../components/RotatingText';
 import { LayoutGroup, motion } from 'framer-motion';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 export default function HomePage() {
   const words = ["Natureza", "Arte", "Vida", "Mozukai"];
 
   return (
-    <Box sx={{ 
+    <><Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'flex-start', 
+      justifyContent: 'flex-start',
       alignItems: 'center',
       pt: '15vh',
       fontSize: '4rem'
@@ -33,11 +34,23 @@ export default function HomePage() {
               staggerDuration={0.025}
               splitLevelClassName="rotating-text-split"
               transition={{ type: "spring", damping: 30, stiffness: 400 }}
-              rotationInterval={3000}
-            />
+              rotationInterval={3000} />
           </motion.p>
         </LayoutGroup>
       </div>
     </Box>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '1rem',
+    }}>
+      <Button variant="contained" endIcon={<ArrowOutwardIcon />}>
+      Produtos
+      </Button>
+      <Button variant="outlined">
+      Saiba mais
+      </Button>
+    </Box></>
   );
 }
