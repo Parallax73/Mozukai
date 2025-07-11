@@ -1,0 +1,578 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 2222,
+      "max": [
+        11.330557823181152,
+        6.330557823181152,
+        5.0
+      ],
+      "min": [
+        -11.330557823181152,
+        -6.330557823181152,
+        -0.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 26664,
+      "componentType": 5126,
+      "count": 2222,
+      "max": [
+        0.9999083876609802,
+        0.9999338984489441,
+        1.0
+      ],
+      "min": [
+        -0.9999083280563354,
+        -0.9998485445976257,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 2222,
+      "max": [
+        20.925634384155273,
+        15.875082969665527
+      ],
+      "min": [
+        -21.293888092041016,
+        -8.804245948791504
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 8604,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 53328,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        10.100001335144043,
+        -2.9000003337860107,
+        0.1499999761581421
+      ],
+      "min": [
+        7.90000057220459,
+        -5.099999904632568,
+        -0.7000000476837158
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 56112,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        0.9991765022277832,
+        0.9991768002510071,
+        0.9938080906867981
+      ],
+      "min": [
+        -0.9991768002510071,
+        -0.9991768598556519,
+        -0.9998798966407776
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 17776,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        2.178499937057495,
+        1.6392500400543213
+      ],
+      "min": [
+        -1.6392500400543213,
+        -1.6392500400543213
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 34416,
+      "componentType": 5125,
+      "count": 612,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 58896,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        -7.90000057220459,
+        -2.9000003337860107,
+        0.1499999761581421
+      ],
+      "min": [
+        -10.100001335144043,
+        -5.099999904632568,
+        -0.7000000476837158
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 61680,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        0.9991768002510071,
+        0.9991768002510071,
+        0.9938080310821533
+      ],
+      "min": [
+        -0.9991765022277832,
+        -0.9991768598556519,
+        -0.9998798966407776
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 19632,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        1.6392500400543213,
+        1.6392500400543213
+      ],
+      "min": [
+        -2.178499937057495,
+        -1.6392500400543213
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 36864,
+      "componentType": 5125,
+      "count": 612,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 64464,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        10.100001335144043,
+        5.099999904632568,
+        0.1499999761581421
+      ],
+      "min": [
+        7.90000057220459,
+        2.9000003337860107,
+        -0.7000000476837158
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 67248,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        0.9991765022277832,
+        0.9991768598556519,
+        0.9938080310821533
+      ],
+      "min": [
+        -0.9991768002510071,
+        -0.9991768002510071,
+        -0.9998798966407776
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 21488,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        1.6392500400543213,
+        1.6392500400543213
+      ],
+      "min": [
+        -2.178499937057495,
+        -1.6392500400543213
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 39312,
+      "componentType": 5125,
+      "count": 612,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 70032,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        -7.90000057220459,
+        5.099999904632568,
+        0.1499999761581421
+      ],
+      "min": [
+        -10.100001335144043,
+        2.9000003337860107,
+        -0.7000000476837158
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 72816,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        0.9991768002510071,
+        0.9991768598556519,
+        0.9938080906867981
+      ],
+      "min": [
+        -0.9991765022277832,
+        -0.9991768002510071,
+        -0.9998798966407776
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 23344,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        2.178499937057495,
+        1.6392500400543213
+      ],
+      "min": [
+        -1.6392500400543213,
+        -1.6392500400543213
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 41760,
+      "componentType": 5125,
+      "count": 612,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Print3DBurton (https://sketchfab.com/Print3DBurton)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/pretty-rectangular-bonsai-pot-e5c2aba5fc1d4e38b554969266f9d550",
+      "title": "pretty rectangular Bonsai Pot"
+    },
+    "generator": "Sketchfab-16.12.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 44208,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 25200,
+      "byteOffset": 44208,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 75600,
+      "byteOffset": 69408,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 145008,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "material",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "pot_bonzaii3",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "pot_bonzaii2",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "pot_bonzaii1",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "pot_bonzaii",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "bac_bac_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "pot bonzaii3_pot bonzaii3_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "pot bonzaii2_pot bonzaii2_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 9,
+            "POSITION": 8,
+            "TEXCOORD_0": 10
+          },
+          "indices": 11,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "pot bonzaii1_pot bonzaii1_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 13,
+            "POSITION": 12,
+            "TEXCOORD_0": 14
+          },
+          "indices": 15,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "pot bonzaii_pot bonzaii_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 17,
+            "POSITION": 16,
+            "TEXCOORD_0": 18
+          },
+          "indices": 19,
+          "material": 4,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.9999474287033081,
+        0.010254811495542304,
+        0.0,
+        0.0,
+        -0.010254811495542304,
+        -0.9999474287033081,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "3aacac2af3a4450c91dbd8f30e730c70.fbx"
+    },
+    {
+      "children": [
+        3,
+        5,
+        7,
+        9,
+        11
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "name": "bac"
+    },
+    {
+      "mesh": 0,
+      "name": "bac_bac_0"
+    },
+    {
+      "children": [
+        6
+      ],
+      "name": "pot bonzaii3"
+    },
+    {
+      "mesh": 1,
+      "name": "pot bonzaii3_pot bonzaii3_0"
+    },
+    {
+      "children": [
+        8
+      ],
+      "name": "pot bonzaii2"
+    },
+    {
+      "mesh": 2,
+      "name": "pot bonzaii2_pot bonzaii2_0"
+    },
+    {
+      "children": [
+        10
+      ],
+      "name": "pot bonzaii1"
+    },
+    {
+      "mesh": 3,
+      "name": "pot bonzaii1_pot bonzaii1_0"
+    },
+    {
+      "children": [
+        12
+      ],
+      "name": "pot bonzaii"
+    },
+    {
+      "mesh": 4,
+      "name": "pot bonzaii_pot bonzaii_0"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

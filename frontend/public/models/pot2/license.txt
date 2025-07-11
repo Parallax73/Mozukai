@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bonsai Marbled Pot
+* source:	https://sketchfab.com/3d-models/bonsai-marbled-pot-3fea7874c66b4140b5af832dd21d351c
+* author:	jasetroy (https://sketchfab.com/jasetroy)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bonsai Marbled Pot" (https://sketchfab.com/3d-models/bonsai-marbled-pot-3fea7874c66b4140b5af832dd21d351c) by jasetroy (https://sketchfab.com/jasetroy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

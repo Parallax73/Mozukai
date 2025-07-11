@@ -1,0 +1,11 @@
+Model Information:
+* title:	pretty rectangular Bonsai Pot
+* source:	https://sketchfab.com/3d-models/pretty-rectangular-bonsai-pot-e5c2aba5fc1d4e38b554969266f9d550
+* author:	Print3DBurton (https://sketchfab.com/Print3DBurton)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "pretty rectangular Bonsai Pot" (https://sketchfab.com/3d-models/pretty-rectangular-bonsai-pot-e5c2aba5fc1d4e38b554969266f9d550) by Print3DBurton (https://sketchfab.com/Print3DBurton) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
