@@ -45,18 +45,20 @@ export default function HeaderBar() {
         >
           <Box sx={{ display: 'flex', alignItems: 'center', px: 0 }}>
             <Typography
+              component={Link}
+              to="/"
               variant="logo"
-              component="div"
               sx={{
-                background: `#000000`,
+                background: '#000000',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'inline-block',
                 fontWeight: theme.typography.logo.fontWeight,
+                textDecoration: 'none', 
               }}
             >
-              Mozukai 木
-            </Typography>
+      Mozukai 木
+    </Typography>
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
