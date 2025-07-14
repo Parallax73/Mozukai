@@ -17,7 +17,7 @@ import {
   type TargetAndTransition,
 } from "framer-motion";
 
-import "./RotatingText/RotatingText.css";
+import "./RotatingText.css";
 
 function cn(...classes: (string | undefined | null | boolean)[]): string {
   return classes.filter(Boolean).join(" ");
