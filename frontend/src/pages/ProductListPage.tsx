@@ -3,35 +3,58 @@ import { Box, Typography } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import { Product } from '../models/Product';
 import { useEffect, useState } from 'react';
-import { ProductService } from '../services/ProductService';
 
-export default function BonsaiPage() {
+interface ProductListProps {
+  productType?: 'bonsai' | 'pot' | 'accessory' | 'tools' | 'supply';
+  title: string;
+}
+
+const ProductService = {
+  baseUrl: 'http://localhost:8000',
+
+  async getAllProducts(productType?: string): Promise<Product[]> {
+    const url = new URL(this.baseUrl + '/products');
+    if (productType) {
+      url.searchParams.append('type', productType);
+    }
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+     
+      throw new Error(`Erro ao buscar produtos: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  },
+};
+
+export default function ProductList({ productType, title }: ProductListProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        setLoading(true);
-        setError(null);
-        const fetchedProducts = await ProductService.getAllProducts();
+        const fetchedProducts = await ProductService.getAllProducts(productType);
         setProducts(fetchedProducts);
       } catch (err: any) {
-        console.error("Failed to fetch products:", err);
-        setError(`Failed to load products: ${err.message || 'Unknown error'}. Please try again later.`);
+        setError(err.message || 'Erro desconhecido ao carregar produtos.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [productType]);
 
   if (loading) {
     return (
       <Box sx={{ px: 4, py: 6, pt: '10rem', textAlign: 'center' }}>
-        <Typography variant="h5">Loading products...</Typography>
+        <Typography variant="h5">Carregando {title.toLowerCase()}...</Typography>
       </Box>
     );
   }
@@ -47,7 +70,7 @@ export default function BonsaiPage() {
   return (
     <Box sx={{ px: 4, py: 6, pt: '10rem' }}>
       <Typography variant="h4" gutterBottom>
-        Products
+        {title}
       </Typography>
 
       <Box
@@ -62,13 +85,20 @@ export default function BonsaiPage() {
           },
         }}
       >
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            displayMode="image" 
-          />
-        ))}
+        {products.length > 0 ? (
+  products.map((product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+      displayMode="image"
+    />
+  ))
+) : (
+  <Typography variant="h6" sx={{ gridColumn: '1 / -1', textAlign: 'center' }}>
+    Sem produtos disponíveis
+  </Typography>
+)}
+
       </Box>
     </Box>
   );

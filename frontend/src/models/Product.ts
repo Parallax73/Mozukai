@@ -5,6 +5,7 @@ export class Product {
   description: string;
   sourceImage: string;
   sourceModel: string;
+  type: 'bonsai' | 'pot' | 'accessory' | 'tools' | 'supply'; 
 
   constructor(
     id: number,
@@ -12,7 +13,8 @@ export class Product {
     price: string,
     description: string,
     sourceImage: string,
-    sourceModel: string
+    sourceModel: string,
+    type: 'bonsai' | 'pot' | 'accessory' | 'tools' | 'supply' 
   ) {
     this.id = id;
     this.name = name;
@@ -20,5 +22,6 @@ export class Product {
     this.description = description;
     this.sourceImage = sourceImage;
     this.sourceModel = sourceModel;
+    this.type = type; 
   }
 }

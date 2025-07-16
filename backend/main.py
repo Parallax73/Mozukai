@@ -1,72 +1,52 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, Text, Double
 from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List, Optional
 from pydantic import BaseModel
-from typing import List
+from sqlalchemy import Column, Integer, String, Text, Float, Enum as SQLAlchemyEnum
+import enum
 
-DATABASE_URL = "postgresql+asyncpg://admin:secret@localhost:5432/mydb"
+from database_connection import Base, AsyncSessionLocal, engine
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+class ProductTypeEnum(str, enum.Enum):
+    bonsai = "bonsai"
+    pot = "pot"
+    accessory = "accessory"
+    tools = "tools"
+    supply = "supply"
 
-AsyncSessionLocal = async_sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
-
-Base = declarative_base()
-
-app = FastAPI()
-
-
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.middleware("http")
-async def catch_exceptions_middleware(request, call_next):
-    try:
-        return await call_next(request)
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-# Modelos
 class ProductModel(Base):
     __tablename__ = "products"
-
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    price = Column(Double) 
-    description = Column(Text)
-    sourceImage = Column(String)
-    sourceModel = Column(String)
+    name = Column(String, nullable=False)
+    price = Column(Float, nullable=False)
+    description = Column(Text, nullable=False)
+    sourceImage = Column(String, nullable=False)
+    sourceModel = Column(String, nullable=False)
+    type = Column(SQLAlchemyEnum(ProductTypeEnum, name="types_enum"), nullable=False)
 
 class Product(BaseModel):
     id: int
     name: str
-    price: float  
+    price: float
     description: str
     sourceImage: str
     sourceModel: str
+    type: ProductTypeEnum
 
     class Config:
         orm_mode = True
 
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 async def get_db():
     async with AsyncSessionLocal() as session:
@@ -77,19 +57,11 @@ async def startup_event():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-
 @app.get("/products", response_model=List[Product])
-async def get_all_products(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(ProductModel))
+async def get_all_products(db: AsyncSession = Depends(get_db), type: Optional[ProductTypeEnum] = Query(None)):
+    query = select(ProductModel)
+    if type:
+        query = query.where(ProductModel.type == type)
+    result = await db.execute(query)
     products = result.scalars().all()
     return products
-
-@app.get("/products/{product_id}", response_model=Product)
-async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(
-        select(ProductModel).where(ProductModel.id == product_id)
-    )
-    product = result.scalars().first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-    return product
