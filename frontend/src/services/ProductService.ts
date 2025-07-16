@@ -1,40 +1,50 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Product } from '../models/Product';
 
-const API_BASE_URL = 'http://localhost:8000';
+const ProductService = {
+  baseUrl: 'http://localhost:8000',
 
-export const ProductService = {
-  getAllProducts: async (type?: 'bonsai' | 'pot' | 'accessory' | 'tools' | 'supply'): Promise<Product[]> => {
+  async getAllProducts(productType?: string, searchTerm?: string): Promise<Product[]> {
+    const url = new URL(this.baseUrl + '/products');
+    if (productType) {
+      url.searchParams.append('type', productType);
+    }
+    if (searchTerm) {
+      url.searchParams.append('name', searchTerm);
+    }
+
     try {
-      const url = type ? `${API_BASE_URL}/products?type=${type}` : `${API_BASE_URL}/products`;
-      const response = await fetch(url);
+      const response = await fetch(url.toString());
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Error while fetching products ${response.status} ${response.statusText}`);
       }
-      const data = await response.json();
-      return data.map((item: any) =>
-        new Product(item.id, item.name, item.price, item.description, item.sourceImage, item.sourceModel, item.type)
-      );
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      throw error;
+      const data: Product[] = await response.json();
+      return data;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw err;
+      }
+      throw new Error('Unkown error while loading products');
     }
   },
 
-  getProductById: async (id: string): Promise<Product | null> => {
+  async getProductById(id: string): Promise<Product> {
     try {
-      const response = await fetch(`${API_BASE_URL}/products/${id}`);
-      if (response.status === 404) {
-        return null;
-      }
+      const response = await fetch(`${this.baseUrl}/products/${id}`);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.status === 404) {
+          throw new Error('Product not found.');
+        }
+        throw new Error(`Error while searching product: ${response.status} ${response.statusText}`);
       }
-      const data = await response.json();
-      return new Product(data.id, data.name, data.price, data.description, data.sourceImage, data.sourceModel, data.type);
-    } catch (error) {
-      console.error(`Error fetching product with ID ${id}:`, error);
-      throw error;
+      const data: Product = await response.json();
+      return data;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw err;
+      }
+      throw new Error('Unkown error while searching products');
     }
   },
 };
+
+export default ProductService;
