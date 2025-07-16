@@ -57,6 +57,25 @@ const theme = createTheme({
     }
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#F5F0E5',
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+        },
+        html: {
+          width: '100%',
+          height: '100%',
+        },
+        '#root': {
+          width: '100%',
+          minHeight: '100vh',
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         text: ({ theme }) => ({
