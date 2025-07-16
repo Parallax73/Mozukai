@@ -1,3 +1,4 @@
+// App.tsx
 import './App.css';
 import CustomStyles from './AppTheme';
 import HeaderBar from './components/HeaderBar';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/ferramentas" element={<ProductList productType="tools" title="Ferramentas" />} />
             <Route path="/insumos" element={<ProductList productType="supply" title="Insumos" />} />
             <Route path="/item/:id" element={<ProductPage />} />
+            <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
           </Routes>
         </Box>
       </CustomStyles>
