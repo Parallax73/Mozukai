@@ -1,4 +1,3 @@
-// App.tsx
 import './App.css';
 import CustomStyles from './AppTheme';
 import HeaderBar from './components/HeaderBar';
@@ -7,6 +6,7 @@ import { Box, CssBaseline } from '@mui/material';
 import ProductList from './pages/ProductListPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
             <Route path="/insumos" element={<ProductList productType="supply" title="Insumos" />} />
             <Route path="/item/:id" element={<ProductPage />} />
             <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </Box>
       </CustomStyles>
