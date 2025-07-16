@@ -6,7 +6,9 @@ import { Suspense, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ModelViewer from '../components/ModelViewer';
 import { Product } from '../models/Product';
-import { ProductService } from '../services/ProductService';
+import ProductService from '../services/ProductService';
+import Alert from '@mui/material/Alert';
+
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -45,7 +47,7 @@ export default function ProductPage() {
   if (loading) {
     return (
       <Box sx={{ pt: '10rem', textAlign: 'center' }}>
-        <Typography variant="h5">Loading product details...</Typography>
+        <Typography variant="h5">Carregando detalhes do produto</Typography>
       </Box>
     );
   }
@@ -61,7 +63,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <Box sx={{ pt: '10rem', textAlign: 'center' }}>
-        <Typography variant="h5">Product not found.</Typography>
+        <Typography variant="h5">Produto não encontrado</Typography>
       </Box>
     );
   }
@@ -69,6 +71,7 @@ export default function ProductPage() {
   const has3DModel = product.sourceModel && product.sourceModel !== '';
 
   return (
+    
     <Box
       sx={{
         pt: '10rem',
@@ -79,7 +82,8 @@ export default function ProductPage() {
         gap: 6,
       }}
     >
-     
+    
+  
       <Box
         sx={{
           display: 'flex',
@@ -93,13 +97,14 @@ export default function ProductPage() {
             flex: 2,
             height: '70vh',
             border: '1px solid',
-            borderColor: 'grey.300',
+            borderColor: 'grey.800',
             borderRadius: 2,
             overflow: 'hidden',
+            backgroundColor: "#eadfc8"
           }}
         >
           {has3DModel ? (
-            <Canvas camera={{ position: [3, 4, 9], fov: 45 }}>
+            <><Typography>Talvez precise diminuir o zoom para visualizar o modelo</Typography><Canvas camera={{ position: [3, 4, 9], fov: 45 }}>
               <ambientLight intensity={1} />
               <directionalLight position={[10, 10, 10]} intensity={1.2} />
               <Suspense fallback={null}>
@@ -107,18 +112,16 @@ export default function ProductPage() {
                   path={product.sourceModel}
                   scale={0.7}
                   position={[0, -1.5, 0]}
-                  autoRotateOnly={false}
-                />
+                  autoRotateOnly={false} />
                 <OrbitControls
                   enableZoom={true}
                   enablePan={false}
                   enableRotate={true}
                   target={[0, 0, 0]}
                   minDistance={3}
-                  maxDistance={20}
-                />
+                  maxDistance={50} />
               </Suspense>
-            </Canvas>
+            </Canvas></>
           ) : (
             <CardMedia
               component="img"
@@ -135,8 +138,9 @@ export default function ProductPage() {
           sx={{
             flex: 1,
             border: '1px solid',
-            borderColor: 'grey.300',
+            borderColor: 'grey.800',
             borderRadius: 2,
+            backgroundColor: "#eadfc8",
             p: 3,
             display: 'flex',
             flexDirection: 'column',
@@ -146,7 +150,7 @@ export default function ProductPage() {
         >
           <Typography variant="h5">{product.name}</Typography>
           <Typography variant="h6" color="text.secondary">
-            {product.price}
+            R${product.price}
           </Typography>
           <Box sx={{ mt: 'auto', display: 'flex', gap: 2 }}>
             <Button variant="contained" color="primary" fullWidth>
@@ -156,6 +160,9 @@ export default function ProductPage() {
               Adicionar ao carrinho
             </Button>
           </Box>
+          <Alert severity="success" color="success">
+            Produto adicionado ao carrinho com sucesso.
+          </Alert>
         </Box>
       </Box>
 
@@ -163,8 +170,9 @@ export default function ProductPage() {
       <Box
         sx={{
           border: '1px solid',
-          borderColor: 'grey.300',
+          borderColor: 'grey.800',
           borderRadius: 2,
+          backgroundColor: "#eadfc8",
           p: 3,
         }}
       >
