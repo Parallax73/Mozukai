@@ -1,21 +1,20 @@
-import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { Suspense } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ModelViewer from './ModelViewer';
-import { Product } from '../models/Product';
+import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+import { Suspense } from 'react'
+import { useNavigate } from 'react-router-dom'
+import ModelViewer from './ModelViewer'
+import { Product } from '../models/Product'
 
 type ProductCardProps = {
-  product: Product;
-  displayMode: 'image' | '3d'; 
-};
+  product: Product
+  displayMode: 'image' | '3d'
+}
 
 export default function ProductCard({ product, displayMode }: ProductCardProps) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  
-  const show3D = displayMode === '3d' && !!product.sourceModel;
+  const show3D = displayMode === '3d' && !!product.sourceModel
 
   return (
     <Card
@@ -38,23 +37,18 @@ export default function ProductCard({ product, displayMode }: ProductCardProps) 
       {show3D ? (
         <CardMedia sx={{ height: 250, position: 'relative' }}>
           <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-            <Canvas camera={{ position: [3, 4, 9], fov: 45 }}>
+            <Canvas camera={{ position: [0, 0, 30], fov: 90 }}>
               <ambientLight intensity={1} />
               <directionalLight position={[10, 10, 10]} intensity={1.2} />
               <Suspense fallback={null}>
-                <ModelViewer
-                  path={product.sourceModel}
-                  scale={0.7}
-                  position={[0, -1.5, 0]}
-                  autoRotateOnly={false}
-                />
+                <ModelViewer path={product.sourceModel} scale={0.7} position={[0, -1.5, 0]} autoRotateOnly={false} />
+
                 <OrbitControls
-                  enableZoom={false}
+                  enableZoom={true}
                   enablePan={false}
-                  enableRotate={false}
-                  target={[0, 0, 0]}
-                  minDistance={9}
-                  maxDistance={9}
+                  enableRotate={true}
+                  minDistance={5}
+                  maxDistance={50}
                 />
               </Suspense>
             </Canvas>
@@ -75,5 +69,5 @@ export default function ProductCard({ product, displayMode }: ProductCardProps) 
         <Typography color="text.secondary">{product.price}</Typography>
       </CardContent>
     </Card>
-  );
+  )
 }
