@@ -6,13 +6,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { IconButton } from '@mui/material';
+import { IconButton, FormControl, InputLabel, Input, InputAdornment } from '@mui/material';
 import Person2Icon from '@mui/icons-material/Person2';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { useState } from 'react';
 
 export default function HeaderBar() {
   const theme = useTheme();
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <AppBar
@@ -54,19 +57,19 @@ export default function HeaderBar() {
                 WebkitTextFillColor: 'transparent',
                 display: 'inline-block',
                 fontWeight: theme.typography.logo.fontWeight,
-                textDecoration: 'none', 
+                textDecoration: 'none',
               }}
             >
-      Mozukai 木
-    </Typography>
+              Mozukai 木
+            </Typography>
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
-            <Button  component={Link} to="/bonsai" variant="text" color="primary" size="small">
+            <Button component={Link} to="/bonsai" variant="text" color="primary" size="small">
               Bonsai
             </Button>
-            <Button  component={Link} to="/ferramentas" variant="text" color="primary" size="small">
-              Ferramentas
+            <Button component={Link} to="/vasos" variant="text" color="primary" size="small">
+              Vasos
             </Button>
             <Button component={Link} to="/insumos" variant="text" color="primary" size="small">
               Insumos
@@ -74,8 +77,8 @@ export default function HeaderBar() {
             <Button component={Link} to="/acessorios" variant="text" color="primary" size="small">
               Acessórios
             </Button>
-            <Button component={Link} to="/vasos" variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
-              Vasos
+            <Button component={Link} to="/ferramentas" variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
+              Ferramentas
             </Button>
             <Button component={Link} to="/blog" variant="text" color="primary" size="small" sx={{ minWidth: 0 }}>
               Blog
@@ -89,14 +92,40 @@ export default function HeaderBar() {
               alignItems: 'center',
             }}
           >
-            <IconButton color="primary" aria-label="profile">
-              <Person2Icon />
-            </IconButton>
-            <IconButton color="primary" aria-label="search">
+            <Box
+              sx={{
+                transition: 'all 0.3s ease',
+                width: searchOpen ? '10rem' : 0,
+                visibility: searchOpen ? 'visible' : 'hidden',
+                overflow: 'hidden',
+                mr: 1,
+              }}
+            >
+              <FormControl variant="standard" fullWidth>
+                <InputLabel htmlFor="input-with-icon-adornment">Buscar</InputLabel>
+                <Input
+                  id="input-with-icon-adornment"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Box>
+
+            <IconButton
+              color="primary"
+              aria-label="search"
+              onClick={() => setSearchOpen((prev) => !prev)}
+            >
               <SearchIcon />
             </IconButton>
             <IconButton color="primary" aria-label="shopping bag">
               <ShoppingBagIcon />
+            </IconButton>
+            <IconButton color="primary" aria-label="profile">
+              <Person2Icon />
             </IconButton>
           </Box>
         </Toolbar>
