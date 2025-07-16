@@ -58,10 +58,25 @@ async def startup_event():
         await conn.run_sync(Base.metadata.create_all)
 
 @app.get("/products", response_model=List[Product])
-async def get_all_products(db: AsyncSession = Depends(get_db), type: Optional[ProductTypeEnum] = Query(None)):
+async def get_all_products(
+    db: AsyncSession = Depends(get_db),
+    type: Optional[ProductTypeEnum] = Query(None),
+    name: Optional[str] = Query(None) 
+):
     query = select(ProductModel)
     if type:
         query = query.where(ProductModel.type == type)
+    if name:
+        
+        query = query.where(ProductModel.name.ilike(f"%{name}%"))
     result = await db.execute(query)
     products = result.scalars().all()
     return products
+
+@app.get("/products/{product_id}", response_model=Product)
+async def get_product_by_id(product_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ProductModel).where(ProductModel.id == product_id))
+    product = result.scalar_one_or_none()
+    if not product:
+        raise HTTPException(status_code=404, detail="Produto não encontrado.")
+    return product
