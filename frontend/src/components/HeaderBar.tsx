@@ -1,5 +1,6 @@
+// HeaderBar.tsx
 import { alpha, useTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,12 +11,41 @@ import { IconButton, FormControl, InputLabel, Input, InputAdornment } from '@mui
 import Person2Icon from '@mui/icons-material/Person2';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function HeaderBar() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      navigate(`/search?query=${encodeURIComponent(debouncedSearchTerm)}`);
+    } else if (debouncedSearchTerm === '' && window.location.pathname === '/search') { /* empty */ }
+  }, [debouncedSearchTerm, navigate]);
+
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
 
   return (
     <AppBar
@@ -102,14 +132,18 @@ export default function HeaderBar() {
               }}
             >
               <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Buscar</InputLabel>
+                <InputLabel htmlFor="product-search-input">Buscar</InputLabel>
                 <Input
-                  id="input-with-icon-adornment"
+                  id="product-search-input"
                   startAdornment={
                     <InputAdornment position="start">
-                      <AccountCircle />
+                      <SearchIcon />
                     </InputAdornment>
                   }
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  onKeyPress={handleSearchSubmit}
+                  placeholder="Buscar produtos..."
                 />
               </FormControl>
             </Box>
