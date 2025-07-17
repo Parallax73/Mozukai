@@ -1,12 +1,18 @@
-from pydantic import BaseSettings
-from typing import List
+import os
+from dotenv import load_dotenv
 
-class Settings(BaseSettings): # type: ignore
-    database_url: str
-    allowed_origins: List[str]
-    secret_key: str
+load_dotenv()
 
-    class Config:
-        env_file = ".env"
+def get_env_variable(name: str) -> str:
+    value = os.environ.get(name)
+    if value is None:
+        raise EnvironmentError(f"Missing required environment variable: {name}")
+    return value
+
+class Settings:
+    database_url: str = get_env_variable("DATABASE_URL")
+    allowed_origins: list[str] = get_env_variable("ALLOWED_ORIGINS").split(",")
+    secret_key: str = get_env_variable("SECRET_KEY")
+    algorithm: str = get_env_variable("ALGORITHM")
 
 settings = Settings()
