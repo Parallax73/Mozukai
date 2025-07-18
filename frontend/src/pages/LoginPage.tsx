@@ -13,17 +13,19 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from '../components/ForgotPassword';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../components/CustomIcons';
+import ForgotPassword from '../components/common/ForgotPassword';
+import { MozukaiIcon } from '../components/common/CustomIcons';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignSelf: 'center',
   width: '100%',
+  backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: 'auto',
+  
   [theme.breakpoints.up('sm')]: {
     maxWidth: '450px',
   },
@@ -48,13 +50,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     position: 'absolute',
     zIndex: -1,
     inset: 0,
-    backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
-    ...theme.applyStyles('dark', {
-      backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-    }),
+     backgroundColor: theme.palette.background.default
   },
 }));
 
@@ -117,13 +113,13 @@ export default function SignIn() {
       <><CssBaseline enableColorScheme /><SignInContainer direction="column" justifyContent="space-between">
     
           <Card variant="outlined">
-              <SitemarkIcon />
+              <MozukaiIcon />
               <Typography
                   component="h1"
                   variant="h4"
                   sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
               >
-                  Sign in
+                  Login
               </Typography>
               <Box
                   component="form"
@@ -144,7 +140,7 @@ export default function SignIn() {
                           id="email"
                           type="email"
                           name="email"
-                          placeholder="your@email.com"
+                          placeholder="seu@email.com"
                           autoComplete="email"
                           autoFocus
                           required
@@ -153,7 +149,7 @@ export default function SignIn() {
                           color={emailError ? 'error' : 'primary'} />
                   </FormControl>
                   <FormControl>
-                      <FormLabel htmlFor="password">Password</FormLabel>
+                      <FormLabel htmlFor="password">Senha</FormLabel>
                       <TextField
                           error={passwordError}
                           helperText={passwordErrorMessage}
@@ -170,7 +166,7 @@ export default function SignIn() {
                   </FormControl>
                   <FormControlLabel
                       control={<Checkbox value="remember" color="primary" />}
-                      label="Remember me" />
+                      label="Lembre-se de mim" />
                   <ForgotPassword open={open} handleClose={handleClose} />
                   <Button
                       type="submit"
@@ -178,7 +174,7 @@ export default function SignIn() {
                       variant="contained"
                       onClick={validateInputs}
                   >
-                      Sign in
+                      login
                   </Button>
                   <Link
                       component="button"
@@ -187,7 +183,7 @@ export default function SignIn() {
                       variant="body2"
                       sx={{ alignSelf: 'center' }}
                   >
-                      Forgot your password?
+                      Esqueceu sua senha?
                   </Link>
               </Box>
               <Divider>or</Divider>
@@ -196,26 +192,17 @@ export default function SignIn() {
                       fullWidth
                       variant="outlined"
                       onClick={() => alert('Sign in with Google')}
-                      startIcon={<GoogleIcon />}
                   >
-                      Sign in with Google
-                  </Button>
-                  <Button
-                      fullWidth
-                      variant="outlined"
-                      onClick={() => alert('Sign in with Facebook')}
-                      startIcon={<FacebookIcon />}
-                  >
-                      Sign in with Facebook
+                      Faça o login com google
                   </Button>
                   <Typography sx={{ textAlign: 'center' }}>
-                      Don&apos;t have an account?{' '}
+                      Não tem uma conta?{' '}
                       <Link
                           href="/material-ui/getting-started/templates/sign-in/"
                           variant="body2"
                           sx={{ alignSelf: 'center' }}
                       >
-                          Sign up
+                          Registre-se
                       </Link>
                   </Typography>
               </Box>
