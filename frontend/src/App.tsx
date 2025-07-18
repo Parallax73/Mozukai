@@ -1,6 +1,6 @@
 import './App.css';
 import CustomStyles from './AppTheme';
-import HeaderBar from './components/HeaderBar';
+import HeaderBar from './components/shared/HeaderBar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Box, CssBaseline } from '@mui/material';
 import ProductList from './pages/ProductListPage';

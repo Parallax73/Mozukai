@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Suspense, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ModelViewer from '../components/ModelViewer';
+import ModelViewer from '../components/shared/ModelViewer';
 import { Product } from '../models/Product';
 import ProductService from '../services/ProductService';
 import Alert from '@mui/material/Alert';

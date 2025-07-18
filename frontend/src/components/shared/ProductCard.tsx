@@ -4,7 +4,7 @@ import { OrbitControls } from '@react-three/drei'
 import { Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModelViewer from './ModelViewer'
-import { Product } from '../models/Product'
+import { Product } from '../../models/Product'
 
 type ProductCardProps = {
   product: Product

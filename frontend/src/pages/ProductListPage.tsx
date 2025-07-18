@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/shared/ProductCard';
 import { Product } from '../models/Product';
 import { useEffect, useState } from 'react';
 import ProductService from '../services/ProductService';

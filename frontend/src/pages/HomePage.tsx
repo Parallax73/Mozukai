@@ -5,8 +5,8 @@ import { Suspense } from 'react'
 import { LayoutGroup, motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
-import RotatingText from '../components/RotatingText/RotatingText'
-import ModelViewer from '../components/ModelViewer'
+import RotatingText from '../components/common/RotatingText'
+import ModelViewer from '../components/shared/ModelViewer'
 
 export default function HomePage() {
   const words = ['Natureza', 'Arte', 'Vida', 'Mozukai']
