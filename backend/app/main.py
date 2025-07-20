@@ -3,8 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import product, user
 from app.db.database_connection import engine, Base
 from app.core.config import settings
+import logging
 
 app = FastAPI()
+
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 app.add_middleware(
     CORSMiddleware,
