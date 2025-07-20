@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Product } from '../models/Product';
 
 const ProductService = {
@@ -13,13 +14,12 @@ const ProductService = {
     }
 
     try {
-      const response = await fetch(url.toString());
-      if (!response.ok) {
-        throw new Error(`Error while fetching products ${response.status} ${response.statusText}`);
-      }
-      const data: Product[] = await response.json();
-      return data;
+      const response = await axios.get(url.toString());
+      return response.data as Product[];
     } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        throw new Error(`Error while fetching products ${err.response.status} ${err.response.statusText}`);
+      }
       if (err instanceof Error) {
         throw err;
       }
@@ -29,16 +29,15 @@ const ProductService = {
 
   async getProductById(id: string): Promise<Product> {
     try {
-      const response = await fetch(`${this.baseUrl}/products/${id}`);
-      if (!response.ok) {
-        if (response.status === 404) {
+      const response = await axios.get(`${this.baseUrl}/products/${id}`);
+      return response.data as Product;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 404) {
           throw new Error('Product not found.');
         }
-        throw new Error(`Error while searching product: ${response.status} ${response.statusText}`);
+        throw new Error(`Error while searching product: ${err.response.status} ${err.response.statusText}`);
       }
-      const data: Product = await response.json();
-      return data;
-    } catch (err) {
       if (err instanceof Error) {
         throw err;
       }
