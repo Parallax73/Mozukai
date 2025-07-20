@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Typography, Button, Card, CardMedia } from '@mui/material';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
