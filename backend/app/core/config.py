@@ -14,5 +14,8 @@ class Settings:
     allowed_origins: list[str] = get_env_variable("ALLOWED_ORIGINS").split(",")
     secret_key: str = get_env_variable("SECRET_KEY")
     algorithm: str = get_env_variable("ALGORITHM")
+    access_token_lifetime: int = int(get_env_variable("ACCESS_TOKEN_LIFETIME"))
+    long_refresh_token_lifetime: int = int(get_env_variable("LONG_REFRESH_TOKEN_LIFETIME"))
+    short_refresh_token_lifetime: int = int(get_env_variable("SHORT_REFRESH_TOKEN_LIFETIME"))
 
 settings = Settings()
