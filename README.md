@@ -1,6 +1,6 @@
 # Mozukai
 
-Create a `.env` file in `backend/app` with the following content:
+Create a `.env` file in `backend/app` with the following fields and add your info:
 
 ```env
 DATABASE_URL=postgresql+asyncpg://youruser:yourpassword@localhost:5432/yourdatabase
