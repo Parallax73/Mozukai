@@ -12,6 +12,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import React, { useState, useEffect } from 'react';
 import { MozukaiIcon } from '../common/CustomIcons';
+import AuthService   from '../../services/AuthService';
+
 
 export default function HeaderBar() {
   const theme = useTheme();
@@ -33,9 +35,8 @@ export default function HeaderBar() {
   useEffect(() => {
     if (debouncedSearchTerm) {
       navigate(`/search?query=${encodeURIComponent(debouncedSearchTerm)}`);
-    } else if (debouncedSearchTerm === '' && window.location.pathname === '/search') { /* empty */ }
+    } 
   }, [debouncedSearchTerm, navigate]);
-
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -44,6 +45,15 @@ export default function HeaderBar() {
   const handleSearchSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
+    }
+  };
+
+  const handleProtectedNavigation = () => {
+    const token = AuthService.getAccessToken();
+    if (token && AuthService.isAuthenticated()) {
+      navigate('/blog');
+    } else {
+      navigate('/login');
     }
   };
 
@@ -155,10 +165,10 @@ export default function HeaderBar() {
             >
               <SearchIcon />
             </IconButton>
-            <IconButton color="primary" aria-label="shopping bag">
+            <IconButton color="primary" aria-label="shopping bag" onClick={handleProtectedNavigation}>
               <ShoppingBagIcon />
             </IconButton>
-            <IconButton  component={Link} to="/login" color="primary" aria-label="profile">
+            <IconButton color="primary" aria-label="profile" onClick={handleProtectedNavigation}>
               <Person2Icon />
             </IconButton>
           </Box>
