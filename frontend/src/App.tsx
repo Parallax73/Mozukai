@@ -7,6 +7,8 @@ import ProductList from './pages/ProductListPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
             <Route path="/item/:id" element={<ProductPage />} />
             <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </Box>
       </CustomStyles>
