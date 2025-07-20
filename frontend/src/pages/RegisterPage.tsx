@@ -1,9 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
+
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
@@ -54,7 +53,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function Login() {
+export default function Register() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -63,9 +62,6 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -74,6 +70,7 @@ export default function Login() {
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
+    const password2 = document.getElementById('password2') as HTMLInputElement;
 
     let isValid = true;
 
@@ -88,7 +85,11 @@ export default function Login() {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('A senha deve ter pelo menos 6 digitos');
+      isValid = false;
+    } else if (password.value !== password2.value) {
+      setPasswordError(true);
+      setPasswordErrorMessage('As senhas não correspondem');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -98,7 +99,8 @@ export default function Login() {
     return isValid;
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validateInputs()) return;
 
@@ -106,10 +108,17 @@ export default function Login() {
     const password = (document.getElementById('password') as HTMLInputElement).value;
 
     try {
-      await UserService.loginUser(email, password);
-      navigate('/bonsai'); 
-    } catch (err) {
-      console.error(err);
+      await UserService.registerUser(email, password);
+      navigate('/login');
+    } catch (err: any) {
+      const errorMsg = err?.response?.data?.detail || err.message || 'Unknown error';
+      if (errorMsg.toLowerCase().includes('email')) {
+        setEmailError(true);
+        setEmailErrorMessage(errorMsg);
+      } else {
+        setPasswordError(true);
+        setPasswordErrorMessage(errorMsg);
+      }
     }
   };
 
@@ -124,11 +133,11 @@ export default function Login() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Login
+            Registre-se
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleRegister}
             noValidate
             sx={{
               display: 'flex',
@@ -146,7 +155,6 @@ export default function Login() {
                 type="email"
                 name="email"
                 placeholder="seu@email.com"
-                autoComplete="email"
                 autoFocus
                 required
                 fullWidth
@@ -155,7 +163,7 @@ export default function Login() {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Senha</FormLabel>
+              <FormLabel htmlFor="password">Digite sua senha</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -163,41 +171,38 @@ export default function Login() {
                 placeholder="••••••"
                 type="password"
                 id="password"
-                autoComplete="current-password"
-                autoFocus
                 required
                 fullWidth
                 variant="outlined"
                 color={passwordError ? 'error' : 'primary'}
               />
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Lembre-se de mim"
-            />
+            <FormControl>
+              <FormLabel htmlFor="password2">Digite a senha novamente</FormLabel>
+              <TextField
+                error={passwordError}
+                helperText={passwordErrorMessage}
+                name="password2"
+                placeholder="••••••"
+                type="password"
+                id="password2"
+                required
+                fullWidth
+                variant="outlined"
+                color={passwordError ? 'error' : 'primary'}
+              />
+            </FormControl>
+
             <ForgotPassword open={open} handleClose={handleClose} />
             <Button type="submit" fullWidth variant="contained">
-              login
+              Registrar
             </Button>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: 'center' }}
-            >
-              Esqueceu sua senha?
-            </Link>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
-              Não tem uma conta?{' '}
-              <Link
-                href="/register"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
-                Registre-se
+              Já tem uma conta?{' '}
+              <Link href="/login" variant="body2" sx={{ alignSelf: 'center' }}>
+                Faça login
               </Link>
             </Typography>
           </Box>
