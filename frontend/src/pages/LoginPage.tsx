@@ -14,7 +14,9 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from '../components/common/ForgotPassword';
-import { MozukaiIcon } from '../components/common/CustomIcons';
+import { GoogleIcon, MozukaiIcon } from '../components/common/CustomIcons';
+import UserService from '../services/UserService';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -25,7 +27,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: 'auto',
-  
   [theme.breakpoints.up('sm')]: {
     maxWidth: '450px',
   },
@@ -50,16 +51,18 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     position: 'absolute',
     zIndex: -1,
     inset: 0,
-     backgroundColor: theme.palette.background.default
+    backgroundColor: theme.palette.background.default,
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,18 +70,6 @@ export default function SignIn() {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   const validateInputs = () => {
@@ -108,105 +99,120 @@ export default function SignIn() {
     return isValid;
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!validateInputs()) return;
+
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+
+    try {
+      await UserService.loginUser(email, password);
+      navigate('/bonsai'); 
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    
-      <><CssBaseline enableColorScheme /><SignInContainer direction="column" justifyContent="space-between">
-    
-          <Card variant="outlined">
-              <MozukaiIcon />
-              <Typography
-                  component="h1"
-                  variant="h4"
-                  sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+    <>
+      <CssBaseline enableColorScheme />
+      <SignInContainer direction="column" justifyContent="space-between">
+        <Card variant="outlined">
+          <MozukaiIcon />
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+          >
+            Login
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              gap: 2,
+            }}
+          >
+            <FormControl>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <TextField
+                error={emailError}
+                helperText={emailErrorMessage}
+                id="email"
+                type="email"
+                name="email"
+                placeholder="seu@email.com"
+                autoComplete="email"
+                autoFocus
+                required
+                fullWidth
+                variant="outlined"
+                color={emailError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="password">Senha</FormLabel>
+              <TextField
+                error={passwordError}
+                helperText={passwordErrorMessage}
+                name="password"
+                placeholder="••••••"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                autoFocus
+                required
+                fullWidth
+                variant="outlined"
+                color={passwordError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Lembre-se de mim"
+            />
+            <ForgotPassword open={open} handleClose={handleClose} />
+            <Button type="submit" fullWidth variant="contained">
+              login
+            </Button>
+            <Link
+              component="button"
+              type="button"
+              onClick={handleClickOpen}
+              variant="body2"
+              sx={{ alignSelf: 'center' }}
+            >
+              Esqueceu sua senha?
+            </Link>
+          </Box>
+          <Divider>or</Divider>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<GoogleIcon />}
+              onClick={() => alert('Sign in with Google')}
+            >
+              Faça login com google
+            </Button>
+            <Typography sx={{ textAlign: 'center' }}>
+              Não tem uma conta?{' '}
+              <Link
+                href="/register"
+                variant="body2"
+                sx={{ alignSelf: 'center' }}
               >
-                  Login
-              </Typography>
-              <Box
-                  component="form"
-                  onSubmit={handleSubmit}
-                  noValidate
-                  sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                      gap: 2,
-                  }}
-              >
-                  <FormControl>
-                      <FormLabel htmlFor="email">Email</FormLabel>
-                      <TextField
-                          error={emailError}
-                          helperText={emailErrorMessage}
-                          id="email"
-                          type="email"
-                          name="email"
-                          placeholder="seu@email.com"
-                          autoComplete="email"
-                          autoFocus
-                          required
-                          fullWidth
-                          variant="outlined"
-                          color={emailError ? 'error' : 'primary'} />
-                  </FormControl>
-                  <FormControl>
-                      <FormLabel htmlFor="password">Senha</FormLabel>
-                      <TextField
-                          error={passwordError}
-                          helperText={passwordErrorMessage}
-                          name="password"
-                          placeholder="••••••"
-                          type="password"
-                          id="password"
-                          autoComplete="current-password"
-                          autoFocus
-                          required
-                          fullWidth
-                          variant="outlined"
-                          color={passwordError ? 'error' : 'primary'} />
-                  </FormControl>
-                  <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
-                      label="Lembre-se de mim" />
-                  <ForgotPassword open={open} handleClose={handleClose} />
-                  <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      onClick={validateInputs}
-                  >
-                      login
-                  </Button>
-                  <Link
-                      component="button"
-                      type="button"
-                      onClick={handleClickOpen}
-                      variant="body2"
-                      sx={{ alignSelf: 'center' }}
-                  >
-                      Esqueceu sua senha?
-                  </Link>
-              </Box>
-              <Divider>or</Divider>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <Button
-                      fullWidth
-                      variant="outlined"
-                      onClick={() => alert('Sign in with Google')}
-                  >
-                      Faça o login com google
-                  </Button>
-                  <Typography sx={{ textAlign: 'center' }}>
-                      Não tem uma conta?{' '}
-                      <Link
-                          href="/material-ui/getting-started/templates/sign-in/"
-                          variant="body2"
-                          sx={{ alignSelf: 'center' }}
-                      >
-                          Registre-se
-                      </Link>
-                  </Typography>
-              </Box>
-          </Card>
-      </SignInContainer></>
+                Registre-se
+              </Link>
+            </Typography>
+          </Box>
+        </Card>
+      </SignInContainer>
+    </>
   );
 }
