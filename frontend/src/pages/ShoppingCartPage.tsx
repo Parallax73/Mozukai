@@ -119,7 +119,7 @@ export default function ShoppingCart() {
             >
               {steps.map((label) => (
                 <Step
-                  sx={{ ':first-child': { pl: 0 }, ':last-child': { pr: 0 } }}
+                  sx={{ ':first-of-type': { pl: 0 }, ':last-of-type': { pr: 0 } }}
                   key={label}
                 >
                   <StepLabel>{label}</StepLabel>
@@ -168,8 +168,8 @@ export default function ShoppingCart() {
             {steps.map((label) => (
               <Step
                 sx={{
-                  ':first-child': { pl: 0 },
-                  ':last-child': { pr: 0 },
+                  ':first-of-type': { pl: 0 },
+                  ':last-of-type': { pr: 0 },
                   '& .MuiStepConnector-root': { top: { xs: 6, sm: 12 } },
                 }}
                 key={label}
