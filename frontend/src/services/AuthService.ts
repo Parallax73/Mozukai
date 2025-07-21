@@ -1,3 +1,7 @@
+import axios from 'axios';
+
+
+
 const AuthService = {
   accessToken: null as string | null,
 
@@ -28,6 +32,11 @@ const AuthService = {
       // refresh failed
     }
     return false;
+  },
+
+  async logout(){
+    const url = new URL("localhost:8080/logout")
+    await axios.post(url.toString())
   }
 };
 
