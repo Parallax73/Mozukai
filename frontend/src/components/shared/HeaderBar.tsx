@@ -12,8 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import React, { useState, useEffect } from 'react';
 import { MozukaiIcon } from '../common/CustomIcons';
-import AuthService   from '../../services/AuthService';
-
+import AuthService from '../../services/AuthService';
 
 export default function HeaderBar() {
   const theme = useTheme();
@@ -26,7 +25,6 @@ export default function HeaderBar() {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, 500);
-
     return () => {
       clearTimeout(handler);
     };
@@ -35,7 +33,7 @@ export default function HeaderBar() {
   useEffect(() => {
     if (debouncedSearchTerm) {
       navigate(`/search?query=${encodeURIComponent(debouncedSearchTerm)}`);
-    } 
+    }
   }, [debouncedSearchTerm, navigate]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,10 +46,15 @@ export default function HeaderBar() {
     }
   };
 
-  const handleProtectedNavigation = () => {
-    const token = AuthService.getAccessToken();
-    if (token && AuthService.isAuthenticated()) {
-      navigate('/blog');
+  const handleProtectedNavigation = async (path: string) => {
+    if (AuthService.isAuthenticated()) {
+      navigate(path);
+      return;
+    }
+
+    const refreshed = await AuthService.tryRefreshToken();
+    if (refreshed) {
+      navigate(path);
     } else {
       navigate('/login');
     }
@@ -165,10 +168,10 @@ export default function HeaderBar() {
             >
               <SearchIcon />
             </IconButton>
-            <IconButton color="primary" aria-label="shopping bag" onClick={handleProtectedNavigation}>
+            <IconButton color="primary" aria-label="shopping bag" onClick={() => handleProtectedNavigation('/cart')}>
               <ShoppingBagIcon />
             </IconButton>
-            <IconButton color="primary" aria-label="profile" onClick={handleProtectedNavigation}>
+            <IconButton color="primary" aria-label="profile" onClick={() => handleProtectedNavigation('/profile')}>
               <Person2Icon />
             </IconButton>
           </Box>
