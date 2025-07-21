@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ShoppingCart from './pages/ShoppingCartPage';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/cart" element={<ShoppingCart />} />
           </Routes>
         </Box>
       </CustomStyles>
