@@ -3,35 +3,53 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-
-const products = [
-  {
-    name: 'Professional plan',
-    desc: 'Monthly subscription',
-    price: '$15.00',
-  },
-  {
-    name: 'Dedicated support',
-    desc: 'Included in the Professional plan',
-    price: 'Free',
-  },
-  {
-    name: 'Hardware',
-    desc: 'Devices needed for development',
-    price: '$69.99',
-  },
-  {
-    name: 'Landing page template',
-    desc: 'License',
-    price: '$49.99',
-  },
-];
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import CartService from '../../services/CartService';
+import { Product } from '../../models/Product';
+import { Button } from '@mui/material';
 
 interface InfoProps {
   totalPrice: string;
 }
 
 export default function Info({ totalPrice }: InfoProps) {
+  const [products, setProducts] = React.useState<Product[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const cartProducts = await CartService.getProductsCart();
+        setProducts(cartProducts);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load cart products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" p={2}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Typography color="error" variant="body2">
+        {error}
+      </Typography>
+    );
+  }
+
   return (
     <React.Fragment>
       <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
@@ -41,18 +59,25 @@ export default function Info({ totalPrice }: InfoProps) {
         {totalPrice}
       </Typography>
       <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText
-              sx={{ mr: 2 }}
-              primary={product.name}
-              secondary={product.desc}
-            />
-            <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-              {product.price}
-            </Typography>
+        {products.length === 0 ? (
+          <ListItem sx={{ py: 1, px: 0 }}>
+            <ListItemText primary="Your cart is empty" />
           </ListItem>
-        ))}
+        ) : (
+          products.map((product) => (
+            <ListItem key={product.id} sx={{ py: 1, px: 0 }}>
+              <ListItemText
+                sx={{ mr: 2 }}
+                primary={product.name}
+                secondary={product.description || product.type || ''}
+              />
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                R${product.price}
+              </Typography>
+              <Button sx={{ml: 5}}>X</Button>
+            </ListItem>
+          ))
+        )}
       </List>
     </React.Fragment>
   );
