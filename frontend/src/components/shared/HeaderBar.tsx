@@ -20,6 +20,8 @@ export default function HeaderBar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [showLogoutButton, setShowLogoutButton] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(AuthService.isAuthenticated());
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -46,6 +48,20 @@ export default function HeaderBar() {
     }
   };
 
+  const handlePersonClick = async () => {
+    if (AuthService.isAuthenticated()) {
+      setShowLogoutButton((prev) => !prev);
+    } else {
+      const refreshed = await AuthService.tryRefreshToken();
+      if (refreshed) {
+        setIsAuthenticated(true);
+        setShowLogoutButton(true);
+      } else {
+        navigate('/login');
+      }
+    }
+  };
+
   const handleProtectedNavigation = async (path: string) => {
     if (AuthService.isAuthenticated()) {
       navigate(path);
@@ -54,10 +70,18 @@ export default function HeaderBar() {
 
     const refreshed = await AuthService.tryRefreshToken();
     if (refreshed) {
+      setIsAuthenticated(true);
       navigate(path);
     } else {
       navigate('/login');
     }
+  };
+
+  const handleLogout = async () => {
+    await AuthService.logout();
+    setIsAuthenticated(false);
+    setShowLogoutButton(false);
+    navigate('/');
   };
 
   return (
@@ -171,9 +195,16 @@ export default function HeaderBar() {
             <IconButton color="primary" aria-label="shopping bag" onClick={() => handleProtectedNavigation('/cart')}>
               <ShoppingBagIcon />
             </IconButton>
-            <IconButton color="primary" aria-label="profile" onClick={() => handleProtectedNavigation('/profile')}>
-              <Person2Icon />
-            </IconButton>
+            <Box>
+              <IconButton color="primary" aria-label="profile" onClick={handlePersonClick}>
+                <Person2Icon />
+              </IconButton>
+              {isAuthenticated && showLogoutButton && (
+                <Button onClick={handleLogout} color="primary" variant="text" size="small">
+                  Logout
+                </Button>
+              )}
+            </Box>
           </Box>
         </Toolbar>
       </Container>
