@@ -59,7 +59,7 @@ export default function HomePage() {
           pb: '4rem'
         }}
       >
-        <Button component={Link} to="/bonsai" variant="contained" endIcon={<ArrowOutwardIcon />}>
+        <Button sx={{ backgroundColor: 'primary.dark'}} component={Link} to="/bonsai" variant="contained" endIcon={<ArrowOutwardIcon />}>
           Produtos
         </Button>
         <Button component={Link} to="/blog" variant="outlined">Saiba mais</Button>
