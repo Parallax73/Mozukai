@@ -11,12 +11,12 @@ import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import AddressForm from '../components/shoppingCart/AddressForm';
-import Info from '../components/shoppingCart/Info';
-import InfoMobile from '../components/shoppingCart/InfoMobile';
-import PaymentForm from '../components/shoppingCart/PaymentForm';
-import Review from '../components/shoppingCart/Review';
 import { MozukaiIcon } from '../components/common/CustomIcons';
+import AddressForm from '../components/pages/shoppingCart/AddressForm';
+import PaymentForm from '../components/pages/shoppingCart/PaymentForm';
+import Review from '../components/pages/shoppingCart/Review';
+import Info from '../components/pages/shoppingCart/Info';
+import InfoMobile from '../components/pages/shoppingCart/InfoMobile';
 
 const steps = ['Endereço de entrega', 'Detalhes do pagamento', 'Revisar seu pedido'];
 function getStepContent(step: number) {

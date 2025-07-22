@@ -21,7 +21,15 @@ export default function HeaderBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [showLogoutButton, setShowLogoutButton] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(AuthService.isAuthenticated());
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const authed = AuthService.isAuthenticated() || await AuthService.tryRefreshToken();
+      setIsAuthenticated(authed);
+    };
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {
