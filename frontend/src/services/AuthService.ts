@@ -1,42 +1,60 @@
 import axios from 'axios';
 
-
+let accessToken: string | null = null;
+const listeners: ((token: string | null) => void)[] = [];
 
 const AuthService = {
-  accessToken: null as string | null,
+  subscribe(listener: (token: string | null) => void) {
+    listeners.push(listener);
+    listener(accessToken);
+  },
 
-  setAccessToken(token: string) {
-    this.accessToken = token;
+  unsubscribe(listener: (token: string | null) => void) {
+    const index = listeners.indexOf(listener);
+    if (index !== -1) {
+      listeners.splice(index, 1);
+    }
+  },
+
+  setAccessToken(token: string | null) {
+    accessToken = token;
+    for (const listener of listeners) {
+      listener(token);
+    }
   },
 
   getAccessToken(): string | null {
-    return this.accessToken;
+    return accessToken;
   },
 
   removeAccessToken() {
-    this.accessToken = null;
+    AuthService.setAccessToken(null);
   },
 
   isAuthenticated(): boolean {
-    return this.accessToken !== null;
+    return accessToken !== null;
   },
 
   async tryRefreshToken(): Promise<boolean> {
     try {
-      const token = await import('./UserService').then(m => m.default.refreshAccessToken());
+      const response = await axios.post("http://localhost:8000/refresh", null, {
+        withCredentials: true,
+      });
+      const token = response.data.access_token;
       if (token) {
-        this.setAccessToken(token);
+        AuthService.setAccessToken(token);
         return true;
       }
-    } catch {
-      // refresh failed
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) { /* empty */ }
     return false;
   },
 
-  async logout(){
-    const url = new URL("localhost:8080/logout")
-    await axios.post(url.toString())
+  async logout() {
+    await axios.post("http://localhost:8000/logout", {}, {
+      withCredentials: true,
+    });
+    AuthService.removeAccessToken();
   }
 };
 

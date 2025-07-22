@@ -16,6 +16,7 @@ import ForgotPassword from '../components/common/ForgotPassword';
 import { MozukaiIcon } from '../components/common/CustomIcons';
 import UserService from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -99,19 +100,22 @@ export default function Login() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!validateInputs()) return;
+  event.preventDefault();
+  if (!validateInputs()) return;
 
-    const email = (document.getElementById('email') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
+  const email = (document.getElementById('email') as HTMLInputElement).value;
+  const password = (document.getElementById('password') as HTMLInputElement).value;
+  const rememberMe = (document.querySelector('input[type=checkbox]') as HTMLInputElement)?.checked ?? false;
 
-    try {
-      await UserService.loginUser(email, password);
-      navigate('/bonsai'); 
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  try {
+    const token = await UserService.loginUser(email, password, rememberMe);
+    AuthService.setAccessToken(token);
+    navigate('/bonsai');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   return (
     <>

@@ -74,7 +74,7 @@ export default function Info({ totalPrice }: InfoProps) {
               <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
                 R${product.price}
               </Typography>
-              <Button sx={{ml: 5}}>X</Button>
+              <Button sx={{ml: 5 }}>X</Button>
             </ListItem>
           ))
         )}
