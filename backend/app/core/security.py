@@ -1,8 +1,10 @@
+from typing import Any
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from app.core.config import settings
 from datetime import datetime, timedelta, timezone
+from jose import JWTError, jwt
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -33,3 +35,14 @@ def create_refresh_token(data: dict, remember_me: bool = False) -> str:
     else:
         minutes = settings.short_refresh_token_lifetime
     return create_token(data, minutes)
+
+
+def get_subject_from_token(token: str) -> str:
+    try:
+        payload: dict[str, Any] = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        subject = payload.get("sub")
+        if not isinstance(subject, str):
+            raise ValueError("Subject not found or not a string")
+        return subject
+    except JWTError:
+        raise ValueError("Invalid token")
