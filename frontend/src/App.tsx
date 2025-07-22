@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import AuthService from './services/AuthService';
 import BlogPage from './pages/BlogPage';
 import BlogItemPage from './pages/BlogItemPage';
+import Chat from './components/shared/Chat';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           overflow: 'hidden'
         }}>
           <HeaderBar />
+          <Chat />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/bonsai" element={<ProductList productType="bonsai" title="Bonsai" />} />
