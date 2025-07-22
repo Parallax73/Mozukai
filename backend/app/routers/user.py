@@ -1,15 +1,16 @@
 import jwt
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Response, Cookie
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app.schemas.user import UserCreate, UserRead
-from app.services.user_service import create_user, get_user_by_email, authenticate_user
+from app.services.user_service import create_user, get_user_by_email, authenticate_user, get_products_cart
 from app.dependencies import get_db
 from app.core.security import create_access_token, create_refresh_token
 from app.core.config import settings
 from jwt import PyJWTError
 
 router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 @router.post("/register/", response_model=UserRead)
 async def register_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
@@ -76,11 +77,30 @@ async def refresh_token( refresh_token: str = Cookie(None)):
     return {"access_token": new_access_token, "token_type": "bearer"}
 
 @router.post("/logout")
-async def logout_user( response: Response):
-     response.delete_cookie(
-         key="refresh_token",
-         path="/",
-         httponly=True,
-         secure=True,
-         samesite="lax",
-     )
+async def logout_user(response: Response):
+    response.delete_cookie(
+        key="refresh_token",
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="lax",
+    )
+    return {}
+
+@router.options("/logout")
+async def options_logout():
+    return Response(status_code=204)
+
+
+@router.get("/cart/products")
+async def get_cart_products(
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    products = await get_products_cart(db, token)
+    if products is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    return products
