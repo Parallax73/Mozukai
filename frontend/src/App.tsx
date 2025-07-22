@@ -9,9 +9,16 @@ import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ShoppingCart from './pages/ShoppingCartPage';
+import { useEffect } from 'react';
+import AuthService from './services/AuthService';
+import BlogPage from './pages/BlogPage';
+import BlogItemPage from './pages/BlogItemPage';
 
 
 function App() {
+   useEffect(() => {
+    AuthService.tryRefreshToken();
+  }, []);
   return (
     <Router>
       <CustomStyles>
@@ -34,6 +41,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/cart" element={<ShoppingCart />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:id" element={<BlogItemPage />} />
           </Routes>
         </Box>
       </CustomStyles>
