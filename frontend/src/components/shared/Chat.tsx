@@ -1,21 +1,19 @@
 import * as React from 'react';
 import ChatIcon from '@mui/icons-material/Chat';
-import { IconButton, Box, Paper, Typography, Button, Divider } from '@mui/material';
+import { IconButton, Box, Paper, Typography, Button, Divider, Link } from '@mui/material';
 
 type Step =
   | 'menu'
-  | 'cuidados'
-  | 'option-1'
-  | 'option-2'
-  | 'option-3'
-  | 'resultado';
+  | 'basic-care'
+  | 'select-type'
+  | 'select-region'
+  | 'show-result';
 
 export default function Chat() {
   const [open, setOpen] = React.useState(false);
   const [step, setStep] = React.useState<Step>('menu');
 
-
-  const [indoorOutdoor, setIndoorOutdoor] = React.useState<'indoor' | 'outdoor' | null>(null);
+  const [type, setType] = React.useState<'indoor' | 'outdoor' | null>(null);
   const [region, setRegion] = React.useState<string | null>(null);
 
   const paperRef = React.useRef<HTMLDivElement | null>(null);
@@ -27,34 +25,30 @@ export default function Chat() {
       if (paperRef.current && !paperRef.current.contains(event.target as Node)) {
         setOpen(false);
         setStep('menu');
-        setIndoorOutdoor(null);
+        setType(null);
         setRegion(null);
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [open]);
 
   const handleClickOpen = () => {
     setOpen(true);
     setStep('menu');
-    setIndoorOutdoor(null);
+    setType(null);
     setRegion(null);
   };
 
   const handleClose = () => {
     setOpen(false);
     setStep('menu');
-    setIndoorOutdoor(null);
+    setType(null);
     setRegion(null);
   };
 
- 
-  const cuidadosBasicosContent = (
+  const basicCareContent = (
     <Box>
       <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
         Cuidados básicos
@@ -68,81 +62,137 @@ export default function Chat() {
           <li>Adube na época correta.</li>
         </ul>
       </Typography>
+      <Typography>
+        Para mais informações leia nosso <Link href="/blog">blog</Link>
+      </Typography>
     </Box>
   );
 
- 
-  const escolherTreeContent = () => {
+  const speciesByRegion: Record<
+    string,
+    {
+      description: string;
+      indoor: { name: string; reason: string }[];
+      outdoor: { name: string; reason: string }[];
+    }
+  > = {
+    'Sul': {
+      description: 'Clima temperado com invernos rigorosos e verões amenos.',
+      indoor: [
+        { name: 'Ficus retusa', reason: 'Tolera bem ambientes internos e umidade.' },
+        { name: 'Schefflera arboricola', reason: 'Folhagem bonita e fácil manutenção.' },
+      ],
+      outdoor: [
+        { name: 'Juniperus', reason: 'Muito resistente ao frio e ao vento.' },
+        { name: 'Acer buergerianum', reason: 'Apresenta belas cores no outono.' },
+        { name: 'Pinheiro-negro', reason: 'Tradicional no estilo clássico japonês.' },
+      ],
+    },
+    'Sudeste': {
+      description: 'Clima tropical e subtropical com estações bem definidas.',
+      indoor: [
+        { name: 'Ficus microcarpa', reason: 'Adapta-se bem à variação de luz e umidade.' },
+        { name: 'Jade (Crassula ovata)', reason: 'Suporta ambientes secos e pouca rega.' },
+      ],
+      outdoor: [
+        { name: 'Piteira', reason: 'Resistente à seca e sol intenso.' },
+        { name: 'Ipê amarelo', reason: 'Florada exuberante e símbolo nacional.' },
+        { name: 'Bougainvillea', reason: 'Floresce abundantemente ao sol.' },
+      ],
+    },
+    'Centro Oeste': {
+      description: 'Clima tropical com estação seca prolongada e calor intenso.',
+      indoor: [
+        { name: 'Ficus benjamina', reason: 'Folhagem densa e adaptação à sombra.' },
+        { name: 'Serissa', reason: 'Compacta, ideal para cultivo interno.' },
+      ],
+      outdoor: [
+        { name: 'Piteira', reason: 'Tolera seca e calor extremo.' },
+        { name: 'Ipê roxo', reason: 'Rústico e ornamental com floração intensa.' },
+        { name: 'Bougainvillea', reason: 'Gosta de calor e pleno sol.' },
+      ],
+    },
+    'Norte': {
+      description: 'Clima equatorial quente e úmido durante todo o ano.',
+      indoor: [
+        { name: 'Ficus retusa', reason: 'Resistente à alta umidade do ambiente.' },
+        { name: 'Schefflera', reason: 'Aceita bem ambientes úmidos e internos.' },
+      ],
+      outdoor: [
+        { name: 'Tamareira', reason: 'Bem adaptada ao clima tropical úmido.' },
+        { name: 'Pau-brasil', reason: 'Nativo e com ótima adaptação à região.' },
+        { name: 'Bougainvillea', reason: 'Resistente e floresce bem ao calor.' },
+      ],
+    },
+    'Nordeste': {
+      description: 'Clima quente com longos períodos secos e sol intenso.',
+      indoor: [
+        { name: 'Jade (Crassula ovata)', reason: 'Armazena água e resiste à secura.' },
+        { name: 'Ficus benjamina', reason: 'Adapta-se bem a ambientes iluminados.' },
+      ],
+      outdoor: [
+        { name: 'Bougainvillea', reason: 'Floresce o ano inteiro com sol forte.' },
+        { name: 'Piteira', reason: 'Ideal para locais áridos e ensolarados.' },
+        { name: 'Flamboyant', reason: 'Muito ornamental e tolerante ao calor.' },
+      ],
+    },
+  };
+
+  const treeSelectionContent = () => {
     switch (step) {
-      case 'option-1':
+      case 'select-type':
         return (
           <Box>
-            <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
-              Indoor ou Outdoor?
+            <Typography variant="subtitle1" sx={{ mt: 2, mb: 2 }}>
+              Selecione uma opção
+            </Typography>
+            <Typography variant="subtitle1">
+              • Indoor: Vivem dentro de casa com boa luz solar (4-6 horas)
+            </Typography>
+            <Typography variant="subtitle1">
+              • Outdoor: Precisam ficar fora, com sol direto e passar pelo inverno
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Button
-                fullWidth
-                variant="contained"
-                color={indoorOutdoor === 'indoor' ? 'primary' : 'secondary'}
-                onClick={() => {
-                  setIndoorOutdoor('indoor');
-                  setStep('option-2');
-                }}
-              >
+              <Button fullWidth variant="contained" onClick={() => { setType('indoor'); setStep('select-region'); }}>
                 Indoor
               </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                color={indoorOutdoor === 'outdoor' ? 'primary' : 'secondary'}
-                onClick={() => {
-                  setIndoorOutdoor('outdoor');
-                  setStep('option-2');
-                }}
-              >
+              <Button fullWidth variant="contained" onClick={() => { setType('outdoor'); setStep('select-region'); }}>
                 Outdoor
               </Button>
             </Box>
           </Box>
         );
-      case 'option-2':
+      case 'select-region':
         return (
           <Box>
             <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
               Em qual parte você está localizado?
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              {['Sul', 'Sudeste', 'Centro Oeste', 'Norte', 'Nordeste'].map((reg) => (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color={region === reg ? 'primary' : 'secondary'}
-                  key={reg}
-                  onClick={() => {
-                    setRegion(reg);
-                    setStep('option-3');
-                  }}
-                >
+              {Object.keys(speciesByRegion).map((reg) => (
+                <Button key={reg} fullWidth variant="contained" onClick={() => { setRegion(reg); setStep('show-result'); }}>
                   {reg}
                 </Button>
               ))}
             </Box>
           </Box>
         );
-      case 'option-3': {
-        let recomendacao = '';
-        if (indoorOutdoor === 'indoor') {
-          recomendacao = `Recomendamos espécies de sombra e que se adaptam bem a ambientes internos na região ${region}.`;
-        } else if (indoorOutdoor === 'outdoor') {
-          recomendacao = `Espécies resistentes ao clima da região ${region} são ideais para o plantio externo.`;
-        }
+      case 'show-result': {
+        if (!region || !type) return null;
+        const data = speciesByRegion[region];
+        const list = data[type];
         return (
           <Box>
             <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
-              Sugestão de árvore
+              Região: {region}
             </Typography>
-            <Typography variant="body2">{recomendacao}</Typography>
+            <Typography variant="body2" sx={{ mb: 2 }}>{data.description}</Typography>
+            <Typography variant="subtitle1">Recomendações:</Typography>
+            {list.map((item, index) => (
+              <Box key={index} sx={{ mb: 1 }}>
+                <Typography variant="body2"><strong>• {item.name}</strong>: {item.reason}</Typography>
+              </Box>
+            ))}
           </Box>
         );
       }
@@ -151,9 +201,9 @@ export default function Chat() {
     }
   };
 
-  
   let content;
   let actions;
+
   if (step === 'menu') {
     content = (
       <Typography variant="body2" sx={{ mt: 1 }}>
@@ -162,30 +212,23 @@ export default function Chat() {
     );
     actions = (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Button variant="contained" onClick={() => setStep('option-1')}>
+        <Button variant="contained" onClick={() => setStep('select-type')}>
           Escolher sua primeira árvore
         </Button>
-        <Button variant="contained" onClick={() => setStep('cuidados')}>
+        <Button variant="contained" onClick={() => setStep('basic-care')}>
           Cuidados básicos
         </Button>
       </Box>
     );
-  } else if (step === 'cuidados') {
-    content = cuidadosBasicosContent;
+  } else if (step === 'basic-care') {
+    content = basicCareContent;
     actions = (
       <Button variant="outlined" fullWidth sx={{ mt: 2 }} onClick={() => setStep('menu')}>
         Voltar
       </Button>
     );
-  } else if (step === 'option-1' || step === 'option-2') {
-    content = escolherTreeContent();
-    actions = (
-      <Button variant="outlined" fullWidth sx={{ mt: 2 }} onClick={() => setStep('menu')}>
-        Voltar
-      </Button>
-    );
-  } else if (step === 'option-3') {
-    content = escolherTreeContent();
+  } else {
+    content = treeSelectionContent();
     actions = (
       <Button variant="outlined" fullWidth sx={{ mt: 2 }} onClick={() => setStep('menu')}>
         Voltar ao início
@@ -238,9 +281,7 @@ export default function Chat() {
             <Divider />
             {content}
           </Box>
-          <Box sx={{ mt: 2 }}>
-            {actions}
-          </Box>
+          <Box sx={{ mt: 2 }}>{actions}</Box>
         </Paper>
       )}
     </>
