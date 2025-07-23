@@ -23,13 +23,15 @@ export default function HeaderBar() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authed = AuthService.isAuthenticated() || await AuthService.tryRefreshToken();
-      setIsAuthenticated(authed);
-    };
-    checkAuth();
-  }, []);
+ useEffect(() => {
+  setIsAuthenticated(AuthService.isAuthenticated());
+  
+  const listener = (token: string | null) => setIsAuthenticated(!!token);
+  AuthService.subscribe(listener);
+  return () => {
+    AuthService.unsubscribe(listener);
+  };
+}, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {

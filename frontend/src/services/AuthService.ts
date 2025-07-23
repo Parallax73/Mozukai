@@ -1,7 +1,17 @@
 import axios from 'axios';
 
 let accessToken: string | null = null;
+let accessTokenExpiry: number | null = null; // Unix timestamp in seconds
 const listeners: ((token: string | null) => void)[] = [];
+
+function decodeJwt(token: string): { exp?: number } {
+  try {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
+  } catch {
+    return {};
+  }
+}
 
 const AuthService = {
   subscribe(listener: (token: string | null) => void) {
@@ -18,6 +28,12 @@ const AuthService = {
 
   setAccessToken(token: string | null) {
     accessToken = token;
+    if (token) {
+      const decoded = decodeJwt(token);
+      accessTokenExpiry = decoded.exp ?? null;
+    } else {
+      accessTokenExpiry = null;
+    }
     for (const listener of listeners) {
       listener(token);
     }
@@ -32,10 +48,13 @@ const AuthService = {
   },
 
   isAuthenticated(): boolean {
-    return accessToken !== null;
+    return accessToken !== null && (!accessTokenExpiry || Date.now() / 1000 < accessTokenExpiry);
   },
 
   async tryRefreshToken(): Promise<boolean> {
+    if (accessToken && accessTokenExpiry && Date.now() / 1000 < accessTokenExpiry - 60) {
+      return true;
+    }
     try {
       const response = await axios.post("http://localhost:8000/refresh", null, {
         withCredentials: true,
@@ -46,7 +65,8 @@ const AuthService = {
         return true;
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) { /* empty */ }
+    } catch (e) { /* ignore */ }
+    AuthService.removeAccessToken();
     return false;
   },
 
