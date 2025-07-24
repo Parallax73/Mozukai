@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app.schemas.user import UserCreate, UserRead
-from app.services.user_service import create_user, get_user_by_email, authenticate_user, get_products_cart
+from app.services.user_service import create_user, get_user_by_email, authenticate_user, remove_product_from_cart, get_products_cart
 from app.dependencies import get_db
 from app.core.security import create_access_token, create_refresh_token
 from app.core.config import settings
@@ -104,3 +104,16 @@ async def get_cart_products(
             detail="User not found",
         )
     return products
+
+@router.delete("/cart/remove/{product_id}")
+async def remove_from_cart(
+    product_id: int,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    try:
+        updated_cart = await remove_product_from_cart(db, token, product_id)
+    except HTTPException as e:
+        raise e
+    return updated_cart
+

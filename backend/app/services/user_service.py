@@ -61,3 +61,28 @@ async def get_products_cart(db: AsyncSession, token: str) -> list[ProductModel] 
     products = list(result.scalars().all())
     
     return products
+
+async def remove_product_from_cart(db: AsyncSession, token: str, product_id: int) -> list[ProductModel]:
+    try:
+        user_email = get_subject_from_token(token)
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+    user = await get_user_by_email(db, user_email)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    cart = getattr(user, "product_cart", None)
+    if cart is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cart not found")
+
+    if product_id not in cart:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not in cart")
+
+    cart.remove(product_id)
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)
+
+    result = await db.execute(select(ProductModel).where(ProductModel.id.in_(cart)))
+    return list(result.scalars().all())
