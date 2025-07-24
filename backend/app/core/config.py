@@ -18,5 +18,9 @@ class Settings:
     long_refresh_token_lifetime: int = int(get_env_variable("LONG_REFRESH_TOKEN_LIFETIME"))
     short_refresh_token_lifetime: int = int(get_env_variable("SHORT_REFRESH_TOKEN_LIFETIME"))
     stripe_key: str = get_env_variable("STRIPE_KEY")
+    smtp_username: str = get_env_variable("SMTP_USERNAME")
+    smtp_paswword: str = get_env_variable("SMTP_PASSWORD")
+    smtp_server: str = get_env_variable("SMTP_SERVER")
+    smtp_port: int = int(get_env_variable("SMTP_PORT"))
 
 settings = Settings()
