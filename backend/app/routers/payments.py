@@ -21,7 +21,7 @@ async def create_checkout_session(request: Request):
                 "quantity": 1,
             }],
             mode="payment",
-            success_url="https://yourdomain.com/success?session_id={CHECKOUT_SESSION_ID}", # Need to change
+            success_url="http://localhost:5173/sucess",
             cancel_url="localhost:5173/",
             locale="pt-BR"
         )
