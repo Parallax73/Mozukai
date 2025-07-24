@@ -2,9 +2,6 @@
 
 A modern Bonsai store with integrated photogrammetry pipeline. Built with TypeScript and Python.
 
-## Description
-
-Mozukai is a full-stack application that combines an e-commerce platform for Bonsai trees with advanced photogrammetry capabilities. The project uses TypeScript (87.7%) for the frontend and core functionality, while Python (10.3%) handles the photogrammetry pipeline.
 
 ## Prerequisites
 
