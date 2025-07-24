@@ -77,7 +77,7 @@ export default function ShoppingCart() {
             maxWidth: 500,
           }}
         >
-          <Info totalPrice={activeStep >= 2 ? 'R$144,97' : 'R$134,98'} />
+          <Info />
         </Box>
       </Grid>
       <Grid
