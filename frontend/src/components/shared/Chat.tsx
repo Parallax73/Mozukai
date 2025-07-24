@@ -12,17 +12,22 @@ type Step =
 export default function Chat() {
   const [open, setOpen] = React.useState(false);
   const [step, setStep] = React.useState<Step>('menu');
-
   const [type, setType] = React.useState<'indoor' | 'outdoor' | null>(null);
   const [region, setRegion] = React.useState<string | null>(null);
 
   const paperRef = React.useRef<HTMLDivElement | null>(null);
+  const iconButtonRef = React.useRef<HTMLButtonElement | null>(null);
 
   React.useEffect(() => {
     if (!open) return;
 
     function handleClickOutside(event: MouseEvent) {
-      if (paperRef.current && !paperRef.current.contains(event.target as Node)) {
+      if (
+        paperRef.current &&
+        !paperRef.current.contains(event.target as Node) &&
+        iconButtonRef.current &&
+        !iconButtonRef.current.contains(event.target as Node)
+      ) {
         setOpen(false);
         setStep('menu');
         setType(null);
@@ -34,15 +39,12 @@ export default function Chat() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [open]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-    setStep('menu');
-    setType(null);
-    setRegion(null);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const toggleOpen = () => {
+    if (open) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
     setStep('menu');
     setType(null);
     setRegion(null);
@@ -239,7 +241,8 @@ export default function Chat() {
   return (
     <>
       <IconButton
-        onClick={open ? handleClose : handleClickOpen}
+        ref={iconButtonRef}
+        onClick={toggleOpen}
         sx={{
           position: 'fixed',
           bottom: 30,
