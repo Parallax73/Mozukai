@@ -15,24 +15,29 @@ import BlogPage from './pages/BlogPage';
 import BlogItemPage from './pages/BlogItemPage';
 import Chat from './components/shared/Chat';
 import ProtectedRoute from './components/common/ProtectedRoute';
-
+import SuccessPage from './pages/SuccessPage';
+import { Navigate } from 'react-router-dom';
 
 function App() {
-   useEffect(() => {
+  useEffect(() => {
     AuthService.tryRefreshToken();
   }, []);
+
   return (
     <Router>
       <CustomStyles>
         <CssBaseline />
-        <Box sx={{
-          minHeight: '100vh',
-          width: '100%',
-          overflow: 'hidden'
-        }}>
+        <Box
+          sx={{
+            minHeight: '100vh',
+            width: '100%',
+            overflow: 'hidden',
+          }}
+        >
           <HeaderBar />
           <Chat />
           <Routes>
+            <Route path="*" element={<Navigate to="/" />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/bonsai" element={<ProductList productType="bonsai" title="Bonsai" />} />
             <Route path="/vasos" element={<ProductList productType="pot" title="Vasos" />} />
@@ -43,10 +48,10 @@ function App() {
             <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            { <Route element={<ProtectedRoute />}>
+            <Route element={<ProtectedRoute />}>
               <Route path="/cart" element={<ShoppingCart />} />
-            </Route> }
-            <Route path="/cart" element={<ShoppingCart />} />
+              <Route path="/success" element={<SuccessPage />} />
+            </Route>
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:id" element={<BlogItemPage />} />
           </Routes>
