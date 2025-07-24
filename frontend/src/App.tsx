@@ -14,6 +14,7 @@ import AuthService from './services/AuthService';
 import BlogPage from './pages/BlogPage';
 import BlogItemPage from './pages/BlogItemPage';
 import Chat from './components/shared/Chat';
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 
 function App() {
@@ -42,6 +43,9 @@ function App() {
             <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            { <Route element={<ProtectedRoute />}>
+              <Route path="/cart" element={<ShoppingCart />} />
+            </Route> }
             <Route path="/cart" element={<ShoppingCart />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:id" element={<BlogItemPage />} />
