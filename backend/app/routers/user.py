@@ -12,7 +12,7 @@ from jwt import PyJWTError
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-@router.post("/register/", response_model=UserRead)
+@router.post("/register", response_model=UserRead)
 async def register_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
     existing_user = await get_user_by_email(db, user_in.email)
     if existing_user:
