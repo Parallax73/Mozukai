@@ -1,4 +1,4 @@
-# Mozukai 🌳
+# Mozukai 
 
 A modern Bonsai store with integrated photogrammetry pipeline. Built with TypeScript and Python.
 
