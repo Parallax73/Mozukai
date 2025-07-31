@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import product, user, payments
+from app.routers import product, user, payments, pipeline
 from app.db.database_connection import engine, Base
 from app.core.config import settings
 import logging
+
 
 # Initialize FastAPI application instance
 app = FastAPI()
@@ -44,3 +45,5 @@ logger.info("User router included")
 # Include payments router endpoints under default prefix
 app.include_router(payments.router)
 logger.info("Payments router included")
+
+app.include_router(pipeline.router)
