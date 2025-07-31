@@ -1,7 +1,7 @@
 import AuthService from "./AuthService";
 
-const backendURL = process.env.REACT_APP_BACKEND_URL;
-const gpuServerUrl = process.env.REACT_APP_GPU_SERVER_URL;
+const backendURL = import.meta.env.VITE_BACKEND_URL;
+const gpuServerUrl = import.meta.env.VITE_GPU_SERVER_URL;
 
 const PipelineService = {
   

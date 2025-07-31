@@ -1,7 +1,7 @@
 import axios from "axios";
 import AuthService from "./AuthService";
 
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 const UserService = {
   

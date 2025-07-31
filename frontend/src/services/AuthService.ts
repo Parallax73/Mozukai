@@ -3,7 +3,7 @@ import axios from 'axios';
 let accessToken: string | null = null;
 let accessTokenExpiry: number | null = null; 
 const listeners: ((token: string | null) => void)[] = [];
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 
 /**

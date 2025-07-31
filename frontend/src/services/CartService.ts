@@ -1,8 +1,7 @@
 import type { Product } from "../models/Product";
 import AuthService from "./AuthService";
 import axios from 'axios';
-
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 const CartService = {
   
