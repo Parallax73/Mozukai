@@ -1,8 +1,11 @@
 import AuthService from "./AuthService";
 
+const backendURL = process.env.REACT_APP_BACKEND_URL;
+const gpuServerUrl = process.env.REACT_APP_GPU_SERVER_URL;
+
 const PipelineService = {
-  baseUrl: "http://localhost:8000", // Main backend URL
-  gpuServerUrl: "http://localhost:8090", // GPU server URL for direct downloads
+  
+  
 
   /**
    * Runs the photogrammetry pipeline by uploading a ZIP file.
@@ -33,7 +36,7 @@ const PipelineService = {
     formData.append("file", file);
 
     try {
-      const response = await fetch(`${this.baseUrl}/run-pipeline/`, {
+      const response = await fetch(`${backendURL}/run-pipeline/`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` },
         credentials: "include",
@@ -103,7 +106,7 @@ const PipelineService = {
     try {
       console.log(`Starting download for job: ${jobId} from GPU server`);
 
-      const response = await fetch(`${this.gpuServerUrl}/download/${jobId}`, { method: "GET" });
+      const response = await fetch(`${gpuServerUrl}/download/${jobId}`, { method: "GET" });
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -144,7 +147,7 @@ const PipelineService = {
     }
 
     try {
-      const response = await fetch(`${this.baseUrl}/jobs/${jobId}/files`, {
+      const response = await fetch(`${backendURL}/jobs/${jobId}/files`, {
         method: "GET",
         headers: { "Authorization": `Bearer ${token}` },
         credentials: "include",
@@ -159,7 +162,7 @@ const PipelineService = {
 
   async checkHealth(): Promise<{ status: string; gpu_server?: any; error?: string }> {
     try {
-      const response = await fetch(`${this.baseUrl}/pipeline/health`);
+      const response = await fetch(`${backendURL}/pipeline/health`);
       return await response.json();
     } catch (error: any) {
       return { status: 'error', error: error?.message || 'Unknown error' };

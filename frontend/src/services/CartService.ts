@@ -2,8 +2,10 @@ import type { Product } from "../models/Product";
 import AuthService from "./AuthService";
 import axios from 'axios';
 
+const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 const CartService = {
-  baseUrl: 'http://localhost:8000',
+  
 
   /**
    * Retrieves the list of products in the user's cart.
@@ -24,7 +26,7 @@ const CartService = {
 
     // Fetch cart products if authenticated
     if (token && AuthService.isAuthenticated()) {
-      const url = `${this.baseUrl}/cart/products`;
+      const url = `${backendURL}/cart/products`;
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
@@ -60,7 +62,7 @@ const CartService = {
     }
 
     // Call backend to remove product from cart
-    const url = `${this.baseUrl}/cart/remove/${productId}`;
+    const url = `${backendURL}/cart/remove/${productId}`;
     await axios.delete(url, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
@@ -95,7 +97,7 @@ const CartService = {
 
     // Create checkout session on backend
     const response = await axios.post(
-      `${this.baseUrl}/create-checkout-session`,
+      `${backendURL}/create-checkout-session`,
       {
         product_name: `Compra de ${products.length} item(ns)`,
         amount: total,

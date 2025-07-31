@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { Product } from '../models/Product';
 
+const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 const ProductService = {
-  baseUrl: 'http://localhost:8000',
+  
 
   /**
    * Fetches a list of products from the backend API.
@@ -14,7 +16,7 @@ const ProductService = {
    * @throws Error with descriptive message if fetching fails
    */
   async getAllProducts(productType?: string, searchTerm?: string): Promise<Product[]> {
-    const url = new URL(this.baseUrl + '/products');
+    const url = new URL(backendURL + '/products');
 
     // Add query parameters if provided
     if (productType) {
@@ -50,7 +52,7 @@ const ProductService = {
    */
   async getProductById(id: string): Promise<Product> {
     try {
-      const response = await axios.get(`${this.baseUrl}/products/${id}`);
+      const response = await axios.get(`${backendURL}/products/${id}`);
       return response.data as Product;
     } catch (err) {
       // Handle 404 not found with specific message

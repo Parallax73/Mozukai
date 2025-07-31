@@ -3,6 +3,8 @@ import axios from 'axios';
 let accessToken: string | null = null;
 let accessTokenExpiry: number | null = null; 
 const listeners: ((token: string | null) => void)[] = [];
+const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 
 /**
  * Decodes a JWT token payload safely.
@@ -99,7 +101,7 @@ const AuthService = {
       return true;
     }
     try {
-      const response = await axios.post("http://localhost:8000/refresh", null, {
+      const response = await axios.post(backendURL+"/refresh", null, {
         withCredentials: true,
       });
       const token = response.data.access_token;
@@ -121,7 +123,7 @@ const AuthService = {
    */
   async logout() {
     try {
-      await axios.post("http://localhost:8000/logout", {}, {
+      await axios.post(backendURL+"/logout", {}, {
         withCredentials: true,
       });
     } catch (error) {

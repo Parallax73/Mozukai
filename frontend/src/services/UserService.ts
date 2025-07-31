@@ -1,8 +1,10 @@
 import axios from "axios";
 import AuthService from "./AuthService";
 
+const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 const UserService = {
-  baseUrl: 'http://localhost:8000',
+  
 
   /**
    * Registers a new user with email and password.
@@ -11,7 +13,7 @@ const UserService = {
    * @param password User's password
    */
   async registerUser(email: string, password: string) {
-    const url = new URL(this.baseUrl + '/register');
+    const url = new URL(backendURL + '/register');
     const data = { email, password };
     await axios.post(url.toString(), data);
   },
@@ -27,7 +29,7 @@ const UserService = {
    * @returns The access token string
    */
   async loginUser(email: string, password: string, rememberMe = false): Promise<string> {
-    const url = new URL(this.baseUrl + '/login');
+    const url = new URL(backendURL + '/login');
     if (rememberMe) url.searchParams.set("rememberMe", "true");
 
     const formData = new FormData();
@@ -51,7 +53,7 @@ const UserService = {
    * @returns The new access token string
    */
   async refreshAccessToken(): Promise<string> {
-    const url = new URL(this.baseUrl + '/refresh');
+    const url = new URL(backendURL + '/refresh');
     const response = await axios.post(url.toString(), null, {
       withCredentials: true,
     });
@@ -64,7 +66,7 @@ const UserService = {
    * Logs out the current user by calling backend logout and removing token locally.
    */
   async logoutUser() {
-    const url = new URL(this.baseUrl + '/logout');
+    const url = new URL(backendURL + '/logout');
     await axios.post(url.toString(), null, {
       withCredentials: true,
     });
