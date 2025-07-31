@@ -17,6 +17,7 @@ import Chat from './components/shared/Chat';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import SuccessPage from './pages/SuccessPage';
 import { Navigate } from 'react-router-dom';
+import UploadPage from './pages/UploadPage';
 
 function App() {
   useEffect(() => {
@@ -54,6 +55,7 @@ function App() {
             </Route>
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:id" element={<BlogItemPage />} />
+            <Route path="/pipeline" element={<UploadPage />} />
           </Routes>
         </Box>
       </CustomStyles>
