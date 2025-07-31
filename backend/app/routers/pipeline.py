@@ -2,7 +2,6 @@ from fastapi import APIRouter, UploadFile, File, HTTPException, Header
 from fastapi.responses import StreamingResponse, Response
 from typing import Optional
 import httpx
-import asyncio
 from app.core.security import get_subject_from_token
 import logging
 
