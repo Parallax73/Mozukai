@@ -1,23 +1,23 @@
 FROM alicevision/alicevision:develop-a2c32bd3b-ubuntu22.04-cuda12.1.1
 
-# Instalações
+# Install dependencies
 RUN apt update && apt install -y python3 python3-pip
 
-# Instala FastAPI + Uvicorn + dependência que faltava
+# Install fastapi + uvicorn + multipart
 RUN pip3 install fastapi uvicorn[standard] python-multipart
 
-# Cria diretório de trabalho
+# Create workspace
 WORKDIR /app
 
-# Copia arquivos para dentro da imagem
+# Copy sh to the image
 COPY photogrammetry_pipeline.sh /app/photogrammetry_pipeline.sh
 COPY app.py /app/app.py
 
-# Dá permissão de execução no script
+# Give running permission to sh
 RUN chmod +x /app/photogrammetry_pipeline.sh
 
-# Expõe a porta
+# Open the port
 EXPOSE 8090
 
-# Comando para iniciar o servidor
+# Start the server
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8090"]
