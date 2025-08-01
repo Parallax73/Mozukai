@@ -1,7 +1,7 @@
 import './App.css';
 import CustomStyles from './AppTheme';
 import HeaderBar from './components/shared/HeaderBar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Box, CssBaseline } from '@mui/material';
 import ProductList from './pages/ProductListPage';
 import HomePage from './pages/HomePage';
@@ -16,9 +16,48 @@ import BlogItemPage from './pages/BlogItemPage';
 import Chat from './components/shared/Chat';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import SuccessPage from './pages/SuccessPage';
-import { Navigate } from 'react-router-dom';
 import UploadPage from './pages/UploadPage';
 import DashboardPage from './pages/DashboardPage';
+
+function AppContent() {
+  const location = useLocation();
+
+  const hideUI = location.pathname.startsWith('/dashboard');
+
+  return (
+    <Box
+      sx={{
+        minHeight: '100vh',
+        width: '100%',
+        overflow: 'hidden',
+      }}
+    >
+      {!hideUI && <HeaderBar />}
+      {!hideUI && <Chat />}
+      <Routes>
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/bonsai" element={<ProductList productType="bonsai" title="Bonsai" />} />
+        <Route path="/vasos" element={<ProductList productType="pot" title="Vasos" />} />
+        <Route path="/acessorios" element={<ProductList productType="accessory" title="Acessorios" />} />
+        <Route path="/ferramentas" element={<ProductList productType="tools" title="Ferramentas" />} />
+        <Route path="/insumos" element={<ProductList productType="supply" title="Insumos" />} />
+        <Route path="/item/:id" element={<ProductPage />} />
+        <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/success" element={<SuccessPage />} />
+        </Route>
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogItemPage />} />
+        <Route path="/pipeline" element={<UploadPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+      </Routes>
+    </Box>
+  );
+}
 
 function App() {
   useEffect(() => {
@@ -29,37 +68,7 @@ function App() {
     <Router>
       <CustomStyles>
         <CssBaseline />
-        <Box
-          sx={{
-            minHeight: '100vh',
-            width: '100%',
-            overflow: 'hidden',
-          }}
-        >
-          <HeaderBar />
-          <Chat />
-          <Routes>
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/bonsai" element={<ProductList productType="bonsai" title="Bonsai" />} />
-            <Route path="/vasos" element={<ProductList productType="pot" title="Vasos" />} />
-            <Route path="/acessorios" element={<ProductList productType="accessory" title="Acessorios" />} />
-            <Route path="/ferramentas" element={<ProductList productType="tools" title="Ferramentas" />} />
-            <Route path="/insumos" element={<ProductList productType="supply" title="Insumos" />} />
-            <Route path="/item/:id" element={<ProductPage />} />
-            <Route path="/search" element={<ProductList title="Resultados da Busca" />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/cart" element={<ShoppingCart />} />
-              <Route path="/success" element={<SuccessPage />} />
-            </Route>
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogItemPage />} />
-            <Route path="/pipeline" element={<UploadPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-           </Routes>
-        </Box>
+        <AppContent />
       </CustomStyles>
     </Router>
   );
