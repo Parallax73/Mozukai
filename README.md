@@ -9,7 +9,6 @@ Mozukai/
 ├── frontend/          # React TypeScript frontend
 ├── backend/           # Python FastAPI backend
 ├── pipeline/          # AliceVision photogrammetry pipeline
-├── docs/              # Documentation
 └── requirements.txt   # Python dependencies
 ```
 
@@ -131,7 +130,7 @@ python pipeline/run_photogrammetry.py --input_dir ./test_images --output_dir ./o
 ### Frontend Stack
 - **React 18** with TypeScript
 - **Vite** for build tooling
-- **Tailwind CSS** for styling
+- **Material UI** for styling
 - **Stripe** for payments
 
 ### Backend Stack
