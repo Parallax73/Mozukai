@@ -1,17 +1,17 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from enum import Enum
+from datetime import datetime, timezone
 
-# Enumeration to define the status of the purchase
 class StatusTypeEnum(str, Enum):
-    PENDING = 'pending'           
-    PAID = 'paid'                
-    PROCESSING = 'processing'  
-    SHIPPED = 'shipped'        
-    DELIVERED = 'delivered'     
-    CANCELED = 'canceled'         
-    REFUNDED = 'refunded'        
-    FAILED = 'failed'
+    PENDING = 'pending'           # Initial state, awaiting payment or processing.
+    PAID = 'paid'                # Payment has been successfully received.
+    PROCESSING = 'processing'  # Order is being prepared for shipment.
+    SHIPPED = 'shipped'        # Product has been dispatched.
+    DELIVERED = 'delivered'     # Product has reached the customer.
+    CANCELED = 'canceled'         # Order has been cancelled.
+    REFUNDED = 'refunded'        # Payment has been refunded to the customer.
+    FAILED = 'failed'             # Purchase transaction failed.
 
 # Pydantic model representing the schema for purchase data.
 # Used for validation, serialization, and documentation in API requests/responses.
@@ -47,6 +47,9 @@ class Purchase(BaseModel):
     status: StatusTypeEnum
     # Purchase status, restricted to enum types.
 
+    date: datetime
+    # Date that product was purchased
+
 class PurchaseCreate(BaseModel):
     product_id: int
     email: str
@@ -57,6 +60,7 @@ class PurchaseCreate(BaseModel):
     state: str
     cep: int
     status: StatusTypeEnum = StatusTypeEnum.PAID 
+    date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class Config:
     orm_mode = True
