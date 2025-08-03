@@ -1,20 +1,12 @@
-from sqlalchemy import Column, Integer, String, Text, Enum as SQLAlchemyEnum
+from datetime import datetime, timezone
+from sqlalchemy import Column, DateTime, Integer, String, Text, Enum as SQLAlchemyEnum
 from enum import Enum
 from app.db.database_connection import Base
+from backend.app.schemas.purchase import StatusTypeEnum
 
 
-# Enumeration to define the status of the purchase.
-# This ensures that the 'status' field can only take on predefined values,
-# improving data integrity and consistency.
-class StatusTypeEnum(str, Enum):
-    PENDING = 'pending'           # Initial state, awaiting payment or processing.
-    PAID = 'paid'                # Payment has been successfully received.
-    PROCESSING = 'processing'  # Order is being prepared for shipment.
-    SHIPPED = 'shipped'        # Product has been dispatched.
-    DELIVERED = 'delivered'     # Product has reached the customer.
-    CANCELED = 'canceled'         # Order has been cancelled.
-    REFUNDED = 'refunded'        # Payment has been refunded to the customer.
-    FAILED = 'failed'             # Purchase transaction failed.
+
+
 
 # SQLAlchemy model representing the 'purchases' table in the database.
 # This class defines the structure and data types for each column in the table.
@@ -52,3 +44,6 @@ class PurchaseModel(Base):
     # Current status of the purchase, constrained by the StatusTypeEnum.
     # 'nullable=False' means a status must always be present.
     # 'default="Paid"' sets a default value for new purchases if not specified.
+
+    date = Column(DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc))
+    # Date when purchase was created
