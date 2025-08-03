@@ -1,5 +1,11 @@
+from enum import Enum
 from pydantic import BaseModel, EmailStr
 from typing import List
+
+class UserRole(str, Enum):
+    USER = 'user'
+    ADMIN = 'admin'
+
 
 # Schema for user registration input data.
 # Validates email format and requires a password.
@@ -13,6 +19,8 @@ class UserCreate(BaseModel):
 
     product_ids: List[int] = []
     # Optional list of product IDs linked to the user, defaults to empty list.
+
+    role: UserRole = UserRole.USER
 
 
 # Schema for reading user data (output schema).
