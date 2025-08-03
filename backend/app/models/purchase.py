@@ -2,11 +2,7 @@ from datetime import datetime, timezone
 from sqlalchemy import Column, DateTime, Integer, String, Text, Enum as SQLAlchemyEnum
 from enum import Enum
 from app.db.database_connection import Base
-from backend.app.schemas.purchase import StatusTypeEnum
-
-
-
-
+from app.schemas.purchase import StatusTypeEnum
 
 # SQLAlchemy model representing the 'purchases' table in the database.
 # This class defines the structure and data types for each column in the table.
@@ -20,13 +16,15 @@ class PurchaseModel(Base):
     product_id = Column(Integer, nullable=False)
     # Foreign key referencing the product that was purchased. Cannot be null.
 
+    email = Column(String, nullable=False)
+
     name = Column(String, nullable=False)
     # Name of the customer who made the purchase. Cannot be null.
 
     address = Column(Text, nullable=False)
     # Full shipping address for the purchase. Cannot be null.
 
-    complement = Column(String, nullable=False)
+    complement = Column(String, nullable=True)
     # Additional address information (e.g., apartment number). Can be null.
 
     city = Column(String, nullable=False)
