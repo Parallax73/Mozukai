@@ -34,7 +34,7 @@ class PurchaseModel(Base):
     address = Column(Text, nullable=False)
     # Full shipping address for the purchase. Cannot be null.
 
-    complement = Column(String, nullable=True)
+    complement = Column(String, nullable=False)
     # Additional address information (e.g., apartment number). Can be null.
 
     city = Column(String, nullable=False)
