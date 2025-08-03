@@ -1,15 +1,9 @@
 from sqlalchemy import Column, Integer, String, Text, Float, Enum as SQLAlchemyEnum
 from enum import Enum
 from app.db.database_connection import Base
+from app.schemas.product import ProductTypeEnum
 
-# Enumeration for different types of products available in the system.
-# This ensures type consistency and restricts input to known categories.
-class ProductTypeEnum(str, Enum):
-    bonsai = "bonsai"
-    pot = "pot"
-    accessory = "accessory"
-    tools = "tools"
-    supply = "supply"
+
 
 # SQLAlchemy model representing a product entity.
 # Each instance corresponds to a row in the 'products' table.
