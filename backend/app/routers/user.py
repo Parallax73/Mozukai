@@ -30,7 +30,7 @@ async def register_user(user_in: UserCreate, db: AsyncSession = Depends(get_db))
     Registers a new user if the email is not already taken.
 
     Args:
-        user_in (UserCreate): User registration data.
+        user_in (UserCreate): User email and password
         db (AsyncSession): Database session dependency.
 
     Returns:
