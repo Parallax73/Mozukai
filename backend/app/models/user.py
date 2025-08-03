@@ -1,8 +1,5 @@
 from sqlalchemy import Column, Integer, String, ARRAY
-from sqlalchemy.orm import declarative_base
-
-# Base class for all ORM models. Required for SQLAlchemy to manage metadata.
-Base = declarative_base()
+from app.db.database_connection import Base
 
 # SQLAlchemy model representing a user entity.
 # Each instance maps to a row in the 'users' table.
