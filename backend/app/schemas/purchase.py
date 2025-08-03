@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from enum import Enum
 
@@ -21,6 +22,9 @@ class Purchase(BaseModel):
     product_id: int
     # Purchased product id
 
+    email: str
+    # User's email
+
     name : str
     # User's full name
 
@@ -42,6 +46,17 @@ class Purchase(BaseModel):
 
     status: StatusTypeEnum
     # Purchase status, restricted to enum types.
+
+class PurchaseCreate(BaseModel):
+    product_id: int
+    email: str
+    name: str
+    address: str
+    complement: Optional[str] = None
+    city: str
+    state: str
+    cep: int
+    status: StatusTypeEnum = StatusTypeEnum.PAID 
 
 class Config:
     orm_mode = True
