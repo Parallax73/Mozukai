@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, ARRAY
+from sqlalchemy import Column, Integer, String, ARRAY, Enum as SQLAlchemyEnum
 from app.db.database_connection import Base
+from app.schemas.user import UserRole
 
 # SQLAlchemy model representing a user entity.
 # Each instance maps to a row in the 'users' table.
@@ -18,3 +19,5 @@ class User(Base):
     product_cart = Column(ARRAY(Integer), default=list)
     # List of product IDs representing items in the user's cart.
     # Uses PostgreSQL ARRAY type to store multiple integers. Defaults to an empty list.
+
+    role = Column(SQLAlchemyEnum(UserRole, name="roles_enum"), nullable=False)
