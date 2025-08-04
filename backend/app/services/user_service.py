@@ -7,6 +7,7 @@ from app.models.product import ProductModel
 from app.schemas.user import UserCreate
 from app.core.security import get_password_hash, verify_password, get_subject_from_token
 from app.services.smtp_service import send_welcome_email
+from sqlalchemy import func
 import logging
 
 logger = logging.getLogger(__name__)
@@ -188,3 +189,19 @@ async def remove_product_from_cart(db: AsyncSession, token: str, product_id: int
 
     logger.info("Returning updated product list with %d products", len(updated_products))
     return updated_products
+
+async def get_user_count(db: AsyncSession) -> int:
+    """
+    Returns the total count of users in the database.
+
+    Args:
+        db (AsyncSession): Async database session.
+
+    Returns:
+        int: Total number of users.
+    """
+    logger.info("Getting total user count")
+    result = await db.execute(select(func.count(User.id)))
+    count = result.scalar() or 0 
+    logger.info("Found %d total users in database", count)
+    return count
