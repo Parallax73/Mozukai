@@ -1,7 +1,7 @@
-export class Product {
+ export class Product {
   id: number;
   name: string;
-  price: string;
+  price: number;
   description: string;
   sourceImage: string;
   sourceModel: string;
@@ -10,7 +10,7 @@ export class Product {
   constructor(
     id: number,
     name: string,
-    price: string,
+    price: number,
     description: string,
     sourceImage: string,
     sourceModel: string,
