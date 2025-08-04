@@ -1,14 +1,23 @@
 import logging
+from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List, Optional
 from fastapi import HTTPException
 from app.models.product import ProductModel
-from app.schemas.product import ProductTypeEnum
+from app.schemas.product import Product, ProductTypeEnum, ProductCreate
+
 
 # Configure logger for this module
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+async def create_product_service(db: AsyncSession, product: ProductCreate) -> ProductModel:
+    new_product = ProductModel(**product.dict())
+    db.add(new_product)
+    await db.commit()
+    await db.refresh(new_product)
+    return new_product
 
 async def get_all_products_service(
     db: AsyncSession,
@@ -27,7 +36,6 @@ async def get_all_products_service(
         List[ProductModel]: List of products matching the criteria.
     """
     logger.info("Fetching products with filters - type: %s, name: %s", type, name)
-
     query = select(ProductModel)
 
     if type:
@@ -70,3 +78,20 @@ async def get_product_by_id_service(product_id: int, db: AsyncSession) -> Produc
 
     logger.info("Product with ID %d found: %s", product_id, product.name)
     return product
+
+
+async def get_product_count(db: AsyncSession) -> int:
+    """
+    Returns the total count of products in the database.
+
+    Args:
+        db (AsyncSession): Async database session.
+
+    Returns:
+        int: Total number of products.
+    """
+    logger.info("Getting total products count")
+    result = await db.execute(select(func.count()).select_from(ProductModel))
+    count = result.scalar() or 0 
+    logger.info("Found %d total products in database", count)
+    return count
