@@ -38,3 +38,11 @@ class Product(BaseModel):
         orm_mode = True
         # Enables compatibility with ORM objects,
         # allowing automatic data loading from SQLAlchemy models.
+
+class ProductCreate(BaseModel):
+    name: str
+    price: float
+    description: str
+    sourceImage: str
+    sourceModel: str
+    type: ProductTypeEnum

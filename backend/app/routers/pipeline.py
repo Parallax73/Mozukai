@@ -1,9 +1,11 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, Header
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Header
 from fastapi.responses import StreamingResponse, Response
 from typing import Optional
 import httpx
-from app.core.security import get_subject_from_token
+from app.core.security import get_subject_from_token, require_admin
 import logging
+
+from backend.app.models.user import User
 
 # Configure logger for this module
 logger = logging.getLogger(__name__)
@@ -136,7 +138,8 @@ async def stream_from_gpu_server(file_content: bytes, filename: str, user_id: st
 @router.post("/run-pipeline/")
 async def run_pipeline(
     file: UploadFile = File(...),
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
+    current_user: User = Depends(require_admin)
 ):
     """
     Endpoint to receive a ZIP file, authenticate user via JWT,
@@ -179,7 +182,8 @@ async def run_pipeline(
 @router.get("/download/{job_id}")
 async def download_results(
     job_id: str,
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
+    current_user: User = Depends(require_admin)
 ):
     """
     Endpoint to download processed results ZIP file for a given job ID
@@ -212,7 +216,8 @@ async def download_results(
 @router.get("/jobs/{job_id}/files")
 async def get_job_files(
     job_id: str,
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
+    current_user: User = Depends(require_admin)
 ):
     """
     Retrieve file tree (list of files) for a specific job from GPU server.
@@ -236,7 +241,7 @@ async def get_job_files(
         raise HTTPException(status_code=500, detail="Failed to get files")
 
 @router.get("/pipeline/health")
-async def pipeline_health():
+async def pipeline_health(current_user: User = Depends(require_admin)):
     """
     Health check endpoint to verify if the GPU server is available.
     Returns combined status of main backend and GPU server.

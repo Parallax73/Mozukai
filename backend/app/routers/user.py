@@ -10,11 +10,14 @@ from app.services.user_service import (
     authenticate_user,
     remove_product_from_cart,
     get_products_cart,
+    get_user_count
 )
 from app.dependencies import get_db
-from app.core.security import create_access_token, create_refresh_token
+from app.core.security import create_access_token, create_refresh_token, require_admin
 from app.core.config import settings
 from jwt import PyJWTError
+
+from app.models.user import User
 
 # Configure module logger
 logger = logging.getLogger(__name__)
@@ -232,3 +235,22 @@ async def remove_from_cart(
         logger.error("Failed to remove product ID %d from cart: %s", product_id, str(e.detail))
         raise e
     return updated_cart
+
+@router.get("/users/count")
+async def count_users(db: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
+    """
+    Returns the total number of registered users.
+    Admin required.
+    
+    Returns:
+        dict: Contains the user count.
+    """
+    try:
+        count = await get_user_count(db)
+        return {"count": count}
+    except Exception as e:
+        logger.error("Failed to get user count: %s", str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Could not retrieve user count"
+        )

@@ -1,11 +1,17 @@
 import logging
 from typing import Any
-import jwt
-from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
-from app.core.config import settings
 from datetime import datetime, timedelta, timezone
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.ext.asyncio import AsyncSession
 from jose import JWTError, jwt
+from passlib.context import CryptContext
+
+from app.core.config import settings
+from app.dependencies import get_db
+from app.models.user import User
+from app.services.user_service import get_user_by_email
 
 # Configure application-level logger
 logger = logging.getLogger(__name__)
@@ -130,3 +136,72 @@ def get_subject_from_token(token: str) -> str:
     except JWTError as e:
         logger.error("Failed to decode token: %s", str(e))
         raise ValueError("Invalid token")
+
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    """
+    Decodes the token and fetches the user from the database.
+
+    Args:
+        token (str): Bearer token extracted by FastAPI.
+        db (AsyncSession): Database session for retrieving user data.
+
+    Returns:
+        User: Authenticated user object.
+
+    Raises:
+        HTTPException: If token is invalid or user not found.
+    """
+    try:
+        logger.debug("Decoding access token to extract user email.")
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        email = payload.get("sub")
+        if not isinstance(email, str):
+            logger.error("Token missing valid 'sub' claim.")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
+            )
+    except JWTError as e:
+        logger.error("Invalid JWT: %s", str(e))
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+        )
+
+    user = await get_user_by_email(db, email)
+    if user is None:
+        logger.error("User not found for email from token: %s", email)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    logger.info("Authenticated user fetched: %s", email)
+    return user
+
+
+async def require_admin(current_user: User = Depends(get_current_user)) -> User:
+    """
+    Ensures that the current user has admin privileges.
+
+    Args:
+        current_user (User): The authenticated user, injected via Depends.
+
+    Returns:
+        User: The current user if they have admin role.
+
+    Raises:
+        HTTPException: If the user is not an admin.
+    """
+    logger.debug("Checking if user %s has admin privileges", current_user.email)
+    if str(current_user.role) != "admin":
+        logger.warning("Access denied: user %s is not admin", current_user.email)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to perform this action",
+        )
+    logger.info("User %s is authorized as admin", current_user.email)
+    return current_user
