@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: 4103a25907b8
+Revision ID: 1b882c490106
 Revises: 
-Create Date: 2025-08-03 17:12:15.836838
+Create Date: 2025-08-03 18:31:45.896150
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4103a25907b8'
+revision: str = '1b882c490106'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -35,9 +35,10 @@ def upgrade() -> None:
     op.create_table('purchases',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('product_id', sa.Integer(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('address', sa.Text(), nullable=False),
-    sa.Column('complement', sa.String(), nullable=False),
+    sa.Column('complement', sa.String(), nullable=True),
     sa.Column('city', sa.String(), nullable=False),
     sa.Column('state', sa.String(), nullable=False),
     sa.Column('cep', sa.Integer(), nullable=False),
@@ -51,6 +52,7 @@ def upgrade() -> None:
     sa.Column('email', sa.String(), nullable=False),
     sa.Column('password', sa.String(), nullable=False),
     sa.Column('product_cart', sa.ARRAY(sa.Integer()), nullable=True),
+    sa.Column('role', sa.Enum('USER', 'ADMIN', name='roles_enum'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
