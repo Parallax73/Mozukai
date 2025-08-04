@@ -70,6 +70,22 @@ const ProductService = {
       throw new Error('Unknown error while searching products');
     }
   },
+
+  async createProduct(product: Omit<Product, 'id'>): Promise<Product> {
+  try {
+    const response = await axios.post(`${backendURL}/products`, product);
+    return response.data as Product;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      throw new Error(`Error while trying to create : ${err.response.status} ${err.response.statusText}`);
+    }
+    if (err instanceof Error) {
+      throw err;
+    }
+    throw new Error('Unknown error');
+  }
+}
+
 };
 
 export default ProductService;
